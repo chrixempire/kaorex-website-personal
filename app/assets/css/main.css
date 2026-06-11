@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+
+/*
+  Neue Montreal is a proprietary typeface used in the Figma design.
+  Drop the licensed .woff2 files into /public/fonts to enable it.
+  Until then the site gracefully falls back to Inter (loaded in nuxt.config head).
+*/
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Neue Montreal', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand + design tokens (from Figma variables) */
+  --color-primary: #007fff;
+  --color-primary-hover: #0066cc;
+
+  --color-heading: #121212;
+  --color-body: #333333;
+  --color-sub: #777777;
+
+  --color-ink: #111827; /* dark sections / secondary button bg */
+  --color-ink-muted: #374151;
+
+  --color-canvas: #f9fafb;
+  --color-muted: #f3f4f6;
+  --color-subtle: #e5e7eb;
+  --color-line: #d1d5db;
+  --color-line-subtle: #e5e7eb;
+
+  --color-warning: #f97316;
+  --color-purple: #8b5cf6;
+  --color-green: #10b981;
+  --color-info: #3b82f6;
+
+  /* Display type scale matching the Figma styles */
+  --text-display: 48px;
+  --text-display--line-height: 60px;
+  --text-hero: 60px;
+  --text-hero--line-height: 64px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background-color: var(--color-canvas);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-heading);
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for the horizontal features carousel */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Content + bordered section panels: 98% width, max 1416px (Figma 1440 canvas) */
+  .container-page {
+    width: 98%;
+    max-width: 1416px;
+    margin-inline: auto;
+    min-width: 0;
+  }
+
+  /* Section bg panel — same 98% / 1416px constraint for images & fills */
+  .section-panel {
+    width: 98%;
+    max-width: 1416px;
+    margin-inline: auto;
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
