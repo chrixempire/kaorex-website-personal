@@ -47,6 +47,9 @@
   --color-line: #d1d5db;
   --color-line-subtle: #e5e7eb;
 
+  --color-placeholder: #b0b2b7; /* input placeholder text */
+  --color-required: #b91c1c; /* required-field asterisk */
+
   --color-warning: #f97316;
   --color-purple: #8b5cf6;
   --color-green: #10b981;
@@ -106,7 +109,7 @@
     display: none;
   }
 
-  /* Content + bordered section panels: 98% width, max 1416px (Figma 1440 canvas) */
+  /* Content container: follows the 1440px Figma canvas. */
   .container-page {
     width: 98%;
     max-width: 1416px;
@@ -114,10 +117,12 @@
     min-width: 0;
   }
 
-  /* Section bg panel — same 98% / 1416px constraint for images & fills */
+  /*
+    Colored/image section shell: always spans 98% of the actual viewport.
+    Content inside each shell keeps its own existing max-width constraints.
+  */
   .section-panel {
-    width: 98%;
-    max-width: 1416px;
+    width: 98vw;
     margin-inline: auto;
     min-width: 0;
   }

@@ -1,8 +1,15 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   activeIndex: number
   screens: readonly string[]
 }>()
+
+onMounted(() => {
+  props.screens.forEach((screen) => {
+    const image = new Image()
+    image.src = screen
+  })
+})
 
 const btnSide = [
   'linear-gradient(90deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 50%), linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 8.8542%, rgba(255,255,255,0.1) 17.187%, rgba(255,255,255,0.1) 83.333%, rgba(255,255,255,0) 91.667%, rgba(255,255,255,0.2) 100%), linear-gradient(90deg, rgb(126,126,126) 0%, rgb(126,126,126) 100%)',
@@ -15,7 +22,7 @@ const btnRight =
 
 <template>
   <!-- Figma 3105:329 desktop 284.391×574 · mobile 3139:1055 175×353 -->
-  <div class="relative mx-auto aspect-[284.391/574] w-full max-w-[175px] shrink-0 lg:max-w-[284.391px]">
+  <div class="relative mx-auto aspect-[284.391/574] w-[175px] shrink-0 lg:w-[284.391px]">
     <div class="absolute inset-x-[0.92%] inset-y-0 overflow-clip rounded-[26.491px] lg:rounded-[43.05px]">
       <div
         aria-hidden="true"
@@ -23,15 +30,15 @@ const btnRight =
       />
       <div class="absolute inset-0 overflow-clip rounded-[26.491px] bg-[#f5f8f8] lg:rounded-[43.05px]">
         <div class="pointer-events-none absolute inset-0 overflow-hidden">
-          <img
-            v-for="(screen, i) in screens"
-            :key="screen"
-            :src="screen"
-            alt=""
-            class="absolute max-w-none object-cover object-top transition-opacity duration-500"
-            :class="activeIndex === i ? 'opacity-100' : 'pointer-events-none opacity-0'"
-            style="height: 95.96%; width: 91.17%; left: 4.22%; top: 2.23%"
-          />
+          <Transition name="phone-screen" mode="out-in">
+            <img
+              :key="screens[activeIndex]"
+              :src="screens[activeIndex]"
+              alt=""
+              class="absolute max-w-none object-cover object-top"
+              style="height: 95.96%; width: 91.17%; left: 4.22%; top: 2.23%"
+            />
+          </Transition>
         </div>
       </div>
       <div
@@ -100,3 +107,15 @@ const btnRight =
     </div>
   </div>
 </template>
+
+<style scoped>
+.phone-screen-enter-active,
+.phone-screen-leave-active {
+  transition: opacity 350ms ease-in-out;
+}
+
+.phone-screen-enter-from,
+.phone-screen-leave-to {
+  opacity: 0;
+}
+</style>

@@ -48,18 +48,22 @@ const viewportRef = ref<HTMLElement | null>(null)
 const trackRef = ref<HTMLElement | null>(null)
 const scrollPosition = ref(0)
 const maxScroll = ref(0)
+const EDGE_TOLERANCE = 2
 
-const trackOffset = computed(() => -scrollPosition.value)
+const canGoPrev = computed(() => scrollPosition.value > EDGE_TOLERANCE)
+const canGoNext = computed(() => scrollPosition.value < maxScroll.value - EDGE_TOLERANCE)
 
-const canGoPrev = computed(() => scrollPosition.value > 0)
-const canGoNext = computed(() => scrollPosition.value < maxScroll.value)
+function syncScrollPosition() {
+  const viewport = viewportRef.value
+  if (!viewport) return
+  scrollPosition.value = viewport.scrollLeft
+}
 
 function updateMaxScroll() {
   const viewport = viewportRef.value
-  const track = trackRef.value
-  if (!viewport || !track) return
-  maxScroll.value = Math.max(0, track.scrollWidth - viewport.clientWidth)
-  scrollPosition.value = Math.min(scrollPosition.value, maxScroll.value)
+  if (!viewport) return
+  maxScroll.value = Math.max(0, viewport.scrollWidth - viewport.clientWidth)
+  syncScrollPosition()
 }
 
 function syncCardWidth() {
@@ -67,10 +71,48 @@ function syncCardWidth() {
 }
 
 function scrollBy(dir: 1 | -1) {
+  const viewport = viewportRef.value
+  if (!viewport) return
   if (dir === -1 && !canGoPrev.value) return
   if (dir === 1 && !canGoNext.value) return
-  const next = scrollPosition.value + dir * CARD_STEP.value
-  scrollPosition.value = Math.max(0, Math.min(maxScroll.value, next))
+  const next = viewport.scrollLeft + dir * CARD_STEP.value
+  viewport.scrollTo({
+    left: Math.max(0, Math.min(maxScroll.value, next)),
+    behavior: 'smooth',
+  })
+}
+
+let isMouseDragging = false
+let dragStartX = 0
+let dragStartScroll = 0
+
+function startMouseDrag(event: PointerEvent) {
+  if (event.pointerType !== 'mouse' || event.button !== 0) return
+  const viewport = viewportRef.value
+  if (!viewport) return
+  isMouseDragging = true
+  dragStartX = event.clientX
+  dragStartScroll = viewport.scrollLeft
+  viewport.setPointerCapture(event.pointerId)
+  viewport.classList.add('is-dragging')
+}
+
+function moveMouseDrag(event: PointerEvent) {
+  if (!isMouseDragging) return
+  const viewport = viewportRef.value
+  if (!viewport) return
+  event.preventDefault()
+  viewport.scrollLeft = dragStartScroll - (event.clientX - dragStartX)
+}
+
+function endMouseDrag(event: PointerEvent) {
+  if (!isMouseDragging) return
+  const viewport = viewportRef.value
+  isMouseDragging = false
+  viewport?.classList.remove('is-dragging')
+  if (viewport?.hasPointerCapture(event.pointerId)) {
+    viewport.releasePointerCapture(event.pointerId)
+  }
 }
 
 let resizeObserver: ResizeObserver | null = null
@@ -100,7 +142,7 @@ onBeforeUnmount(() => {
   <!-- Figma 3105:405 — pt 58, gap 50, cards, gap 50, nav, pb 58 -->
   <section
     id="features"
-    class="w-full bg-black"
+    class="section-panel overflow-hidden rounded-[30px] bg-black lg:rounded-[40px]"
   >
     <div class="flex min-h-0 flex-col gap-[50px] pt-10 pb-10 lg:min-h-[824px] lg:pt-[58px] lg:pb-[58px]">
       <div class="mx-auto w-fit max-w-[342px] shrink-0 px-5 text-center lg:max-w-[526px] lg:px-0">
@@ -122,16 +164,23 @@ onBeforeUnmount(() => {
         </p>
       </div>
 
-      <div ref="viewportRef" class="h-[450px] shrink-0 overflow-hidden lg:h-[490px]">
+      <div
+        ref="viewportRef"
+        class="feature-carousel no-scrollbar h-[450px] shrink-0 overflow-x-auto overflow-y-hidden lg:h-[490px]"
+        @scroll.passive="syncScrollPosition"
+        @pointerdown="startMouseDrag"
+        @pointermove="moveMouseDrag"
+        @pointerup="endMouseDrag"
+        @pointercancel="endMouseDrag"
+      >
         <div
           ref="trackRef"
-          class="flex w-max gap-5 px-[30px] transition-transform duration-500 ease-out will-change-transform"
-          :style="{ transform: `translateX(${trackOffset}px)` }"
+          class="flex w-max gap-5 px-[30px]"
         >
           <article
             v-for="f in features"
             :key="f.key"
-            class="relative flex h-[450px] w-[340px] shrink-0 flex-col overflow-hidden rounded-[20px] bg-white lg:h-[490px] lg:w-[400px]"
+            class="relative flex h-[450px] w-[340px] shrink-0 snap-start flex-col overflow-hidden rounded-[20px] bg-white lg:h-[490px] lg:w-[400px]"
           >
             <div class="px-6 pt-8 lg:px-[30px] lg:pt-10">
               <h3 class="text-lg font-medium leading-7 text-heading lg:text-2xl lg:leading-8">{{ f.title }}</h3>
@@ -227,7 +276,7 @@ onBeforeUnmount(() => {
           type="button"
           aria-label="Previous"
           :disabled="!canGoPrev"
-          class="cursor-pointer transition-opacity disabled:cursor-default disabled:opacity-40"
+          class="cursor-pointer transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
           @click="scrollBy(-1)"
         >
           <img src="/images/arrow-left.svg" alt="" class="h-[30px] w-[30px]" />
@@ -236,7 +285,7 @@ onBeforeUnmount(() => {
           type="button"
           aria-label="Next"
           :disabled="!canGoNext"
-          class="cursor-pointer transition-opacity disabled:cursor-default disabled:opacity-40"
+          class="cursor-pointer transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
           @click="scrollBy(1)"
         >
           <img src="/images/arrow-right.svg" alt="" class="h-[30px] w-[30px]" />
@@ -245,3 +294,23 @@ onBeforeUnmount(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+.feature-carousel {
+  cursor: grab;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: 30px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.feature-carousel.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.feature-carousel img {
+  -webkit-user-drag: none;
+}
+</style>

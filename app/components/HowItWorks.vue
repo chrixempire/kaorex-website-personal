@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const { fadeUp } = useMotionPresets()
 
-const STEP_MS = 4000
+const STEP_MS = 8000
+const DESKTOP_STEP_PITCH = 44
 
 /** Figma ring mid-line: outer 14.625, inner ~12.426 → stroke 2.2 on r 13.525 */
 const RING_CX = 14.625
@@ -71,7 +72,7 @@ onBeforeUnmount(() => {
       </div>
 
       <div
-        class="flex w-full max-w-[288px] flex-col items-center gap-[30px] lg:max-w-none lg:flex-row lg:items-center lg:justify-center lg:gap-[60px]"
+        class="flex w-full max-w-[288px] flex-col items-center gap-[30px] lg:grid lg:w-auto lg:max-w-none lg:grid-cols-[284.391px_288px] lg:items-center lg:gap-[60px]"
       >
         <PhoneFrame :active-index="active" :screens="screens" />
 
@@ -122,63 +123,66 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Desktop: full step list -->
-        <ol class="hidden w-full flex-col gap-3 sm:max-w-[288px] lg:flex">
-          <li
-            v-for="(step, i) in steps"
-            :key="step.label"
-            class="flex min-h-8 items-center"
+        <div class="relative hidden w-full sm:max-w-[288px] lg:block">
+          <span
+            class="absolute left-0 top-[1.5px] z-10 flex h-[29px] w-[29px] items-center justify-center transition-transform duration-400 ease-[cubic-bezier(0.34,1.2,0.64,1)]"
+            :style="{ transform: `translate3d(0, ${active * DESKTOP_STEP_PITCH}px, 0)` }"
           >
-            <button
-              type="button"
-              class="flex w-full cursor-pointer items-center text-left transition-colors"
-              :class="active === i ? 'gap-4' : 'gap-0'"
-              @click="selectStep(i)"
+            <svg
+              :key="active"
+              class="step-progress absolute inset-0 size-full -rotate-90"
+              viewBox="0 0 29.25 29.25"
+              fill="none"
+              aria-hidden="true"
+              :style="{
+                '--step-duration': `${STEP_MS}ms`,
+                '--progress-c': `${PROGRESS_CIRCUMFERENCE}`,
+              }"
             >
-              <span
-                v-if="active === i"
-                class="relative flex h-[29px] w-[29px] shrink-0 items-center justify-center"
+              <circle
+                :cx="RING_CX"
+                :cy="RING_CY"
+                :r="RING_RADIUS"
+                fill="none"
+                stroke="#777777"
+                :stroke-width="RING_STROKE"
+              />
+              <circle
+                :cx="RING_CX"
+                :cy="RING_CY"
+                :r="RING_RADIUS"
+                fill="none"
+                stroke="white"
+                :stroke-width="RING_STROKE"
+                stroke-linecap="round"
+                class="step-progress__ring"
+              />
+            </svg>
+            <span class="relative text-lg leading-7 text-white">{{ active + 1 }}</span>
+          </span>
+
+          <ol class="flex w-full flex-col gap-3">
+            <li
+              v-for="(step, i) in steps"
+              :key="step.label"
+              class="flex min-h-8 items-center"
+            >
+              <button
+                type="button"
+                class="flex w-full cursor-pointer items-center text-left"
+                :aria-current="active === i ? 'step' : undefined"
+                @click="selectStep(i)"
               >
-                <svg
-                  :key="active"
-                  class="step-progress absolute inset-0 size-full -rotate-90"
-                  viewBox="0 0 29.25 29.25"
-                  fill="none"
-                  aria-hidden="true"
-                  :style="{
-                    '--step-duration': `${STEP_MS}ms`,
-                    '--progress-c': `${PROGRESS_CIRCUMFERENCE}`,
-                  }"
+                <span
+                  class="origin-left whitespace-nowrap text-2xl font-medium leading-8 transition-[color,opacity,translate,scale] duration-400 ease-[cubic-bezier(0.34,1.2,0.64,1)]"
+                  :class="active === i ? 'translate-x-[45px] scale-100 text-white opacity-100' : 'translate-x-0 scale-[0.98] text-sub opacity-60'"
                 >
-                  <circle
-                    :cx="RING_CX"
-                    :cy="RING_CY"
-                    :r="RING_RADIUS"
-                    fill="none"
-                    stroke="#777777"
-                    :stroke-width="RING_STROKE"
-                  />
-                  <circle
-                    :cx="RING_CX"
-                    :cy="RING_CY"
-                    :r="RING_RADIUS"
-                    fill="none"
-                    stroke="white"
-                    :stroke-width="RING_STROKE"
-                    stroke-linecap="round"
-                    class="step-progress__ring"
-                  />
-                </svg>
-                <span class="relative text-lg leading-7 text-white">{{ i + 1 }}</span>
-              </span>
-              <span
-                class="text-2xl font-medium leading-8 whitespace-nowrap"
-                :class="active === i ? 'text-white' : 'text-sub'"
-              >
-                {{ step.label }}
-              </span>
-            </button>
-          </li>
-        </ol>
+                  {{ step.label }}
+                </span>
+              </button>
+            </li>
+          </ol>
+        </div>
       </div>
     </div>
   </section>

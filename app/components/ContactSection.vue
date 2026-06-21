@@ -1,0 +1,514 @@
+<script setup lang="ts">
+/* Figma: IPC Product MVP — Contact Us (node 11402:3338) */
+
+const benefits = [
+  'Exchange currency directly with verified traders',
+  'Protect every transaction with secure escrow',
+  'Get transparent rates driven by market demand',
+]
+
+const dialCodes = [
+  { code: '+234', label: 'Nigeria (+234)' },
+  { code: '+233', label: 'Ghana (+233)' },
+  { code: '+254', label: 'Kenya (+254)' },
+  { code: '+27', label: 'South Africa (+27)' },
+  { code: '+1', label: 'United States (+1)' },
+  { code: '+44', label: 'United Kingdom (+44)' },
+]
+
+const countries = [
+  'Nigeria',
+  'Ghana',
+  'Kenya',
+  'South Africa',
+  'United States',
+  'United Kingdom',
+  'Canada',
+  'United Arab Emirates',
+  'Other',
+]
+
+const describesOptions = [
+  'Individual trader',
+  'Business owner',
+  'Financial institution',
+  'Developer / Partner',
+  'Other',
+]
+
+const hearAboutOptions = [
+  'Search engine',
+  'Social media',
+  'Friend or colleague',
+  'News or article',
+  'Other',
+]
+
+const form = reactive({
+  firstName: '',
+  lastName: '',
+  email: '',
+  dialCode: '+234',
+  phone: '',
+  company: '',
+  country: '',
+  describes: '',
+  message: '',
+  hearAbout: '',
+  consent: false,
+})
+
+const errors = reactive<Record<string, string>>({})
+const submitting = ref(false)
+const submitted = ref(false)
+const submitError = ref('')
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function validate() {
+  for (const key of Object.keys(errors)) delete errors[key]
+
+  if (!form.email.trim()) errors.email = 'Email is required'
+  else if (!EMAIL_RE.test(form.email.trim())) errors.email = 'Enter a valid email address'
+  if (!form.company.trim()) errors.company = 'Company name is required'
+  if (!form.country) errors.country = 'Please select a country'
+  if (!form.describes) errors.describes = 'Please select an option'
+  if (!form.message.trim()) errors.message = 'A message is required'
+  if (!form.hearAbout) errors.hearAbout = 'Please select an option'
+  if (!form.consent) errors.consent = 'Please accept the privacy policy to continue'
+
+  return Object.keys(errors).length === 0
+}
+
+async function onSubmit() {
+  submitError.value = ''
+  if (!validate()) return
+
+  submitting.value = true
+  try {
+    await $fetch('/api/contact', { method: 'POST', body: { ...form } })
+    submitted.value = true
+  } catch (err: any) {
+    const serverErrors = err?.data?.data?.errors as Record<string, string> | undefined
+    if (serverErrors) Object.assign(errors, serverErrors)
+    submitError.value = 'Something went wrong. Please try again.'
+  } finally {
+    submitting.value = false
+  }
+}
+
+/* Shared field classes — keeps the markup tidy and consistent. */
+const fieldBase =
+  'w-full rounded-[10px] border bg-white px-[14px] py-[12px] text-base leading-6 tracking-[0.32px] text-ink outline-none transition-colors placeholder:text-placeholder focus:border-primary focus:ring-2 focus:ring-primary/15'
+
+function fieldClass(name: string) {
+  return [fieldBase, errors[name] ? 'border-required' : 'border-line']
+}
+</script>
+
+<template>
+  <section id="contact" class="section-panel bg-subtle">
+    <div class="container-page pb-16 pt-[120px] lg:pb-[66px] lg:pt-[154px]">
+      <div
+        class="mx-auto flex max-w-[1164px] flex-col items-center gap-12 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[84px]"
+      >
+        <!-- Left column ───────────────────────────────────────── -->
+        <div class="flex w-full flex-col lg:h-[838px] lg:w-[478px]">
+          <div class="flex flex-col gap-[22px]">
+            <div class="flex flex-col">
+              <p class="text-sm font-medium leading-5 text-primary">CONTACT US</p>
+              <h1
+                class="mt-1 text-[36px] font-medium leading-[44px] text-heading lg:text-display lg:leading-[var(--text-display--line-height)]"
+              >
+                Speak to our team
+              </h1>
+              <p class="mt-2 text-lg leading-7 text-body lg:text-xl lg:leading-[28px]">
+                Submit your details and our team will review your request
+              </p>
+            </div>
+
+            <a
+              href="mailto:info@kaorex.com"
+              class="flex items-center gap-[14px] text-body transition-colors hover:text-primary"
+            >
+              <svg
+                class="h-6 w-6 shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="2.5" y="4.5" width="19" height="15" rx="3" />
+                <path d="m3.5 7 7.3 5.2a2 2 0 0 0 2.4 0L20.5 7" />
+              </svg>
+              <span class="text-xl leading-7">info@kaorex.com</span>
+            </a>
+          </div>
+
+          <!-- "With kaorex you can" — bottom-aligned to match the device height -->
+          <div class="mt-12 flex flex-col gap-4 lg:mt-auto">
+            <p class="text-xl font-medium leading-7 text-heading">With kaorex you can</p>
+            <ul class="flex flex-col gap-[10px]">
+              <li v-for="item in benefits" :key="item" class="flex items-center gap-3">
+                <svg
+                  class="h-5 w-5 shrink-0 text-primary"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5" />
+                  <path
+                    d="m6.2 10.2 2.4 2.4 5-5.2"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span class="text-base leading-6 tracking-[0.32px] text-body">{{ item }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right column — device frame + form ─────────────────── -->
+        <div
+          class="relative w-full max-w-[602px] overflow-hidden rounded-[28px] lg:h-[838px] lg:w-[602px] lg:rounded-[40px]"
+        >
+          <!-- Metallic device bezel (decorative) -->
+          <img
+            src="/images/contact/device-frame.jpg"
+            alt=""
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0 hidden size-full rounded-[40px] object-cover mix-blend-luminosity lg:block"
+          />
+
+          <!-- Inner white card -->
+          <div
+            class="relative flex h-full flex-col overflow-hidden rounded-[20px] border-[6px] border-subtle bg-canvas lg:absolute lg:left-1/2 lg:top-1/2 lg:h-[790px] lg:w-[570px] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-[24px] lg:border-8"
+          >
+            <!-- Success state -->
+            <div
+              v-if="submitted"
+              class="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center"
+            >
+              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                <svg
+                  class="h-8 w-8 text-primary"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m5 13 4 4L19 7" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-medium leading-7 text-heading">Request received</h2>
+              <p class="max-w-[380px] text-sm leading-5 tracking-[0.42px] text-sub">
+                Thanks{{ form.firstName ? `, ${form.firstName}` : '' }}! Our team will review your
+                request and get back to you within 1-2 business days.
+              </p>
+            </div>
+
+            <!-- Form -->
+            <template v-else>
+              <form
+                class="form-scroll flex flex-1 flex-col gap-[10px] overflow-y-auto p-4"
+                novalidate
+                @submit.prevent="onSubmit"
+              >
+                <p class="text-lg font-medium leading-7 text-body">
+                  Submit your details and our team will review your request
+                </p>
+
+                <!-- First / Last name -->
+                <div class="flex flex-col gap-[10px] sm:flex-row sm:gap-5">
+                  <div class="flex flex-1 flex-col gap-[10px]">
+                    <label for="firstName" class="text-base leading-6 tracking-[0.32px] text-ink">
+                      First name
+                    </label>
+                    <input
+                      id="firstName"
+                      v-model="form.firstName"
+                      type="text"
+                      placeholder="John"
+                      :class="fieldClass('firstName')"
+                    />
+                  </div>
+                  <div class="flex flex-1 flex-col gap-[10px]">
+                    <label for="lastName" class="text-base leading-6 tracking-[0.32px] text-ink">
+                      Last name
+                    </label>
+                    <input
+                      id="lastName"
+                      v-model="form.lastName"
+                      type="text"
+                      placeholder="Doe"
+                      :class="fieldClass('lastName')"
+                    />
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="flex flex-col gap-[10px]">
+                  <label for="email" class="text-base leading-6 tracking-[0.32px] text-ink">
+                    Email <span class="text-xl leading-6 text-required">*</span>
+                  </label>
+                  <input
+                    id="email"
+                    v-model="form.email"
+                    type="email"
+                    placeholder="you@company.com"
+                    :class="fieldClass('email')"
+                  />
+                  <p v-if="errors.email" class="text-sm leading-5 text-required">{{ errors.email }}</p>
+                </div>
+
+                <!-- Phone number -->
+                <div class="flex flex-col gap-[10px]">
+                  <label for="phone" class="text-base leading-6 tracking-[0.32px] text-ink">
+                    Phone number
+                  </label>
+                  <div class="flex gap-[10px]">
+                    <div
+                      class="relative flex h-[52px] w-[111px] shrink-0 items-center rounded-[10px] border border-line bg-white px-[14px]"
+                    >
+                      <span class="h-[30px] w-[30px] shrink-0 overflow-hidden rounded-full">
+                        <svg viewBox="0 0 30 30" class="h-full w-full" aria-hidden="true">
+                          <rect width="10" height="30" fill="#008751" />
+                          <rect x="10" width="10" height="30" fill="#fff" />
+                          <rect x="20" width="10" height="30" fill="#008751" />
+                        </svg>
+                      </span>
+                      <svg
+                        class="pointer-events-none ml-auto h-[22px] w-[22px] text-ink"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="m7 10 5 5 5-5" />
+                      </svg>
+                      <select
+                        v-model="form.dialCode"
+                        aria-label="Country dialing code"
+                        class="absolute inset-0 cursor-pointer opacity-0"
+                      >
+                        <option v-for="d in dialCodes" :key="d.code" :value="d.code">
+                          {{ d.label }}
+                        </option>
+                      </select>
+                    </div>
+                    <input
+                      id="phone"
+                      v-model="form.phone"
+                      type="tel"
+                      :placeholder="`${form.dialCode} XXX XXX XXXX`"
+                      :class="fieldClass('phone')"
+                    />
+                  </div>
+                </div>
+
+                <!-- Company Name -->
+                <div class="flex flex-col gap-[10px]">
+                  <label for="company" class="text-base leading-6 tracking-[0.32px] text-ink">
+                    Company Name <span class="text-xl leading-6 text-required">*</span>
+                  </label>
+                  <input
+                    id="company"
+                    v-model="form.company"
+                    type="text"
+                    placeholder="Enter your company name"
+                    :class="fieldClass('company')"
+                  />
+                  <p v-if="errors.company" class="text-sm leading-5 text-required">
+                    {{ errors.company }}
+                  </p>
+                </div>
+
+                <!-- Country -->
+                <div class="flex flex-col gap-[10px]">
+                  <label for="country" class="text-base leading-6 tracking-[0.32px] text-ink">
+                    Country <span class="text-xl leading-6 text-required">*</span>
+                  </label>
+                  <div class="relative">
+                    <select
+                      id="country"
+                      v-model="form.country"
+                      :class="[fieldClass('country'), 'cursor-pointer appearance-none pr-10', form.country ? 'text-ink' : 'text-placeholder']"
+                    >
+                      <option value="" disabled>Select country</option>
+                      <option v-for="c in countries" :key="c" :value="c" class="text-ink">{{ c }}</option>
+                    </select>
+                    <svg
+                      class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m7 10 5 5 5-5" />
+                    </svg>
+                  </div>
+                  <p v-if="errors.country" class="text-sm leading-5 text-required">
+                    {{ errors.country }}
+                  </p>
+                </div>
+
+                <!-- What best describes you? -->
+                <div class="flex flex-col gap-[10px]">
+                  <label for="describes" class="text-base leading-6 tracking-[0.32px] text-ink">
+                    What best describes you? <span class="text-xl leading-6 text-required">*</span>
+                  </label>
+                  <div class="relative">
+                    <select
+                      id="describes"
+                      v-model="form.describes"
+                      :class="[fieldClass('describes'), 'cursor-pointer appearance-none pr-10', form.describes ? 'text-ink' : 'text-placeholder']"
+                    >
+                      <option value="" disabled>Select an option</option>
+                      <option v-for="o in describesOptions" :key="o" :value="o" class="text-ink">
+                        {{ o }}
+                      </option>
+                    </select>
+                    <svg
+                      class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m7 10 5 5 5-5" />
+                    </svg>
+                  </div>
+                  <p v-if="errors.describes" class="text-sm leading-5 text-required">
+                    {{ errors.describes }}
+                  </p>
+                </div>
+
+                <!-- Message -->
+                <div class="flex flex-col gap-[10px]">
+                  <label for="message" class="text-base leading-6 tracking-[0.32px] text-ink">
+                    Message <span class="text-xl leading-6 text-required">*</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    v-model="form.message"
+                    rows="3"
+                    placeholder="Tell me more about your request"
+                    :class="[fieldClass('message'), 'min-h-[90px] resize-y']"
+                  />
+                  <p v-if="errors.message" class="text-sm leading-5 text-required">
+                    {{ errors.message }}
+                  </p>
+                </div>
+
+                <!-- How did you hear about us? -->
+                <div class="flex flex-col gap-[10px]">
+                  <label for="hearAbout" class="text-base leading-6 tracking-[0.32px] text-ink">
+                    How did you hear about us? <span class="text-xl leading-6 text-required">*</span>
+                  </label>
+                  <div class="relative">
+                    <select
+                      id="hearAbout"
+                      v-model="form.hearAbout"
+                      :class="[fieldClass('hearAbout'), 'cursor-pointer appearance-none pr-10', form.hearAbout ? 'text-ink' : 'text-placeholder']"
+                    >
+                      <option value="" disabled>Select an option</option>
+                      <option v-for="o in hearAboutOptions" :key="o" :value="o" class="text-ink">
+                        {{ o }}
+                      </option>
+                    </select>
+                    <svg
+                      class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m7 10 5 5 5-5" />
+                    </svg>
+                  </div>
+                  <p v-if="errors.hearAbout" class="text-sm leading-5 text-required">
+                    {{ errors.hearAbout }}
+                  </p>
+                </div>
+
+                <!-- Consent -->
+                <div class="flex flex-col gap-1">
+                  <label class="flex items-start gap-[10px]">
+                    <input
+                      v-model="form.consent"
+                      type="checkbox"
+                      class="mt-[1px] h-[23px] w-[23px] shrink-0 cursor-pointer rounded-[5px] border border-[#d4d5d6] accent-primary"
+                    />
+                    <span class="text-sm leading-5 tracking-[0.42px] text-body">
+                      I agree to the
+                      <a href="#" class="text-[#0066cc] hover:underline">Privacy Policy</a>
+                      and consent to be contacted by the Kaorex team regarding my request
+                    </span>
+                  </label>
+                  <p v-if="errors.consent" class="text-sm leading-5 text-required">
+                    {{ errors.consent }}
+                  </p>
+                </div>
+              </form>
+
+              <!-- Sticky submit footer -->
+              <div class="flex flex-col items-center gap-[10px] border-t border-subtle bg-white px-4 py-5">
+                <p v-if="submitError" class="text-sm leading-5 text-required">{{ submitError }}</p>
+                <button
+                  type="button"
+                  :disabled="submitting"
+                  class="flex w-full items-center justify-center rounded-[44px] bg-primary px-6 py-4 text-base font-medium leading-6 tracking-[0.16px] text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-70"
+                  @click="onSubmit"
+                >
+                  {{ submitting ? 'Sending…' : 'Submit request' }}
+                </button>
+                <p class="max-w-[380px] text-center text-sm leading-5 tracking-[0.42px] text-sub">
+                  Our team will review your request and get back to you within 1-2 business days.
+                </p>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+/* Thin custom scrollbar inside the device card (matches Figma 11402:3461). */
+.form-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink) var(--color-canvas);
+}
+.form-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.form-scroll::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+  border-radius: 20px;
+}
+.form-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-ink);
+  border-radius: 20px;
+}
+</style>

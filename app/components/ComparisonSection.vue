@@ -69,19 +69,21 @@ onMounted(async () => {
     const cards = gsap.utils.toArray<HTMLElement>('.comparison-state', pinEl)
     const N = cards.length
 
-    gsap.set(cards, { autoAlpha: 0, y: 16, transformOrigin: '50% 50%' })
-    gsap.set(cards[0], { autoAlpha: 1, y: 0 })
+    gsap.set(cards, { autoAlpha: 0, scale: 0.9, transformOrigin: '50% 50%' })
+    gsap.set(cards[0], { autoAlpha: 1, scale: 1 })
 
     let current = 0
     const show = (i: number) => {
       activeIndex.value = i
       if (i === current) return
       current = i
+      gsap.killTweensOf(cards)
       cards.forEach((card, idx) => {
+        const entering = idx === i
         gsap.to(card, {
-          autoAlpha: idx === i ? 1 : 0,
-          y: idx === i ? 0 : 16,
-          duration: 0.45,
+          autoAlpha: entering ? 1 : 0,
+          scale: entering ? 1 : 0.9,
+          duration: entering ? 0.6 : 0.54,
           ease: 'power2.out',
           overwrite: 'auto',
         })
@@ -170,22 +172,22 @@ onBeforeUnmount(() => {
                 </p>
               </div>
             </article>
-          </div>
 
-          <div
-            class="flex shrink-0 items-center justify-center gap-2"
-            role="tablist"
-            :aria-label="`Step ${activeIndex + 1} of ${states.length}`"
-          >
             <div
-              v-for="(s, i) in states"
-              :key="s.eyebrow"
-              role="tab"
-              :aria-selected="activeIndex === i"
-              :aria-label="s.eyebrow"
-              class="h-2 rounded-full transition-all duration-300 ease-out"
-              :class="activeIndex === i ? 'w-6 bg-white' : 'w-2 bg-white/40'"
-            />
+              class="absolute inset-x-0 bottom-2 z-20 flex items-center justify-center gap-2"
+              role="tablist"
+              :aria-label="`Step ${activeIndex + 1} of ${states.length}`"
+            >
+              <div
+                v-for="(s, i) in states"
+                :key="s.eyebrow"
+                role="tab"
+                :aria-selected="activeIndex === i"
+                :aria-label="s.eyebrow"
+                class="h-2 rounded-full transition-all duration-300 ease-out"
+                :class="activeIndex === i ? 'w-6 bg-black' : 'w-2 bg-black/30'"
+              />
+            </div>
           </div>
         </div>
       </div>

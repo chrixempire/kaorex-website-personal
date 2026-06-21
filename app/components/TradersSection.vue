@@ -36,9 +36,9 @@ const SPREAD_X = [0, 258, 516] as const
 const STACK_CENTER = SPREAD_X[1]
 
 const stackFan = [
-  { x: 0, y: 0, rot: 0, z: 2, scale: 1 },
-  { x: 0, y: 0, rot: 0, z: 3, scale: 1 },
-  { x: 0, y: 0, rot: 0, z: 1, scale: 1 },
+  { x: 0, y: 8, rot: 0, z: 1, scale: 0.92, opacity: 0.84 },
+  { x: 0, y: 0, rot: 0, z: 3, scale: 1.2, opacity: 1 },
+  { x: 0, y: 8, rot: 0, z: 2, scale: 0.92, opacity: 0.84 },
 ] as const
 
 function lerp(a: number, b: number, t: number) {
@@ -60,10 +60,12 @@ function cardTransform(index: number) {
   const y = lerp(fan.y, 0, t)
   const rot = lerp(fan.rot, 0, t)
   const scale = lerp(fan.scale, 1, t)
+  const opacity = lerp(fan.opacity, 1, t)
 
   return {
     transform: `translate3d(${x}px, ${y}px, 0) rotate(${rot}deg) scale(${scale})`,
-    zIndex: Math.round(lerp(fan.z, 1, t)),
+    opacity,
+    zIndex: fan.z,
   }
 }
 

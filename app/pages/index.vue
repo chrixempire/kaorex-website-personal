@@ -1,9 +1,10 @@
 <template>
   <div>
+    <CursorLevelTrail />
     <TheNavbar />
 
-    <main class="flex w-full min-w-0 flex-col gap-[50px] overflow-x-hidden">
-      <div class="container-page pt-3">
+    <main class="flex w-full min-w-0 flex-col gap-[30px] overflow-x-hidden lg:gap-[50px]">
+      <div class="section-panel pt-3">
         <div class="relative isolate w-full">
           <HeroSection />
           <TradersSection />

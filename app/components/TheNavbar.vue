@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const links = [
-  { label: 'How it works', href: '#how-it-works' },
-  { label: 'Security', href: '#security' },
-  { label: 'Features', href: '#features' },
-  { label: 'Comparison', href: '#comparison' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'How it works', href: '/#how-it-works' },
+  { label: 'Security', href: '/#security' },
+  { label: 'Features', href: '/#features' },
+  { label: 'Comparison', href: '/#comparison' },
+  { label: 'FAQ', href: '/#faq' },
 ]
 
 const open = ref(false)
@@ -34,7 +34,7 @@ function close() {
         class="mx-auto hidden h-[60px] w-full max-w-[899.743px] items-center gap-10 rounded-[60px] border-[0.5px] border-line-subtle bg-white px-[10px] py-[6px] transition-shadow duration-300 lg:flex"
         :class="scrolled ? 'shadow-md shadow-black/8' : 'shadow-sm'"
       >
-        <a href="#top" class="flex w-[129.743px] shrink-0 items-center" @click="close">
+        <a href="/" class="flex w-[129.743px] shrink-0 items-center" @click="close">
           <img
             src="/images/logo.svg"
             alt="Kaorex"
@@ -60,12 +60,12 @@ function close() {
           >
             Sign in
           </a>
-          <a
-            href="#cta"
+          <NuxtLink
+            to="/contact"
             class="inline-flex h-12 w-[160px] shrink-0 items-center justify-center rounded-[44px] bg-primary px-6 py-3 text-base font-medium leading-6 tracking-[0.16px] text-white transition-colors hover:bg-primary-hover"
           >
             Contact us
-          </a>
+          </NuxtLink>
         </div>
       </nav>
 
@@ -74,7 +74,7 @@ function close() {
         class="relative flex h-12 w-full min-w-0 items-center justify-between gap-3 rounded-[60px] border-[0.5px] border-line-subtle bg-white px-3 py-[6px] shadow-sm lg:hidden"
         :class="scrolled ? 'shadow-md shadow-black/8' : ''"
       >
-        <a href="#top" class="flex min-w-0 shrink items-center" @click="close">
+        <a href="/" class="flex min-w-0 shrink items-center" @click="close">
           <img
             src="/images/logo.svg"
             alt="Kaorex"
@@ -140,7 +140,7 @@ function close() {
             <AppButton variant="secondary" href="#" :show-icon="false" block @click="close">
               Sign in
             </AppButton>
-            <AppButton variant="primary" href="#cta" :show-icon="false" block @click="close">
+            <AppButton variant="primary" href="/contact" :show-icon="false" block @click="close">
               Contact us
             </AppButton>
           </div>
