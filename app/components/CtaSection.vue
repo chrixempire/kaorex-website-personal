@@ -1,6 +1,7 @@
 
 <script setup lang="ts">
 const { fadeIn } = useMotionPresets()
+const { requestContact } = useContactModal()
 </script>
 
 <template>
@@ -40,8 +41,8 @@ const { fadeIn } = useMotionPresets()
           <Reveal as="div" :delay="460" class="mt-5 lg:mt-2.5">
             <AppButton
               variant="primary"
-              href="#"
               class="group !h-10 !w-[168px] !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
+              @click="requestContact"
             >
               Contact us
             </AppButton>

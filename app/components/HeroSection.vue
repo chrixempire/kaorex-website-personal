@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { requestContact } = useContactModal()
+</script>
 
 <template>
   <section id="top" class="relative z-10 w-full">
@@ -41,9 +43,9 @@
             >
               <AppButton
                 variant="primary"
-                href="#cta"
                 class="group !h-10 !w-[168px] !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
                 :show-icon="false"
+                @click="requestContact"
               >
                 Contact us
               </AppButton>
