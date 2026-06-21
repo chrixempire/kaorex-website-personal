@@ -10,6 +10,14 @@ const links = [
 const open = ref(false)
 const scrolled = ref(false)
 const sound = useUiSound()
+const { openModal } = useContactModal()
+
+// Mobile: collapse the nav first, then open the contact modal in place
+// (no navigation). The delay lets the menu finish its close animation.
+function openContact() {
+  close()
+  window.setTimeout(openModal, 300)
+}
 
 function onScroll() {
   scrolled.value = window.scrollY > 12
@@ -155,7 +163,7 @@ function itemStyle(i: number) {
                   </AppButton>
                 </div>
                 <div :style="itemStyle(links.length + 1)">
-                  <AppButton variant="primary" href="/contact" :show-icon="false" block @click="close">
+                  <AppButton variant="primary" :show-icon="false" block @click="openContact">
                     Contact us
                   </AppButton>
                 </div>

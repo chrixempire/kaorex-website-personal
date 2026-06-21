@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/* Figma: IPC Product MVP — Contact Us (node 11402:3338) */
+/* Figma: IPC Product MVP — Contact Us (desktop node 11402:3338, mobile modal 11405:3499) */
 
 const benefits = [
   'Exchange currency directly with verified traders',
@@ -7,103 +7,30 @@ const benefits = [
   'Get transparent rates driven by market demand',
 ]
 
-const dialCodes = [
-  { code: '+234', label: 'Nigeria (+234)' },
-  { code: '+233', label: 'Ghana (+233)' },
-  { code: '+254', label: 'Kenya (+254)' },
-  { code: '+27', label: 'South Africa (+27)' },
-  { code: '+1', label: 'United States (+1)' },
-  { code: '+44', label: 'United Kingdom (+44)' },
-]
+const {
+  dialCodes,
+  countries,
+  describesOptions,
+  hearAboutOptions,
+  form,
+  errors,
+  submitting,
+  submitted,
+  submitError,
+  onSubmit,
+  borderClass,
+} = useContactForm()
 
-const countries = [
-  'Nigeria',
-  'Ghana',
-  'Kenya',
-  'South Africa',
-  'United States',
-  'United Kingdom',
-  'Canada',
-  'United Arab Emirates',
-  'Other',
-]
-
-const describesOptions = [
-  'Individual trader',
-  'Business owner',
-  'Financial institution',
-  'Developer / Partner',
-  'Other',
-]
-
-const hearAboutOptions = [
-  'Search engine',
-  'Social media',
-  'Friend or colleague',
-  'News or article',
-  'Other',
-]
-
-const form = reactive({
-  firstName: '',
-  lastName: '',
-  email: '',
-  dialCode: '+234',
-  phone: '',
-  company: '',
-  country: '',
-  describes: '',
-  message: '',
-  hearAbout: '',
-  consent: false,
-})
-
-const errors = reactive<Record<string, string>>({})
-const submitting = ref(false)
-const submitted = ref(false)
-const submitError = ref('')
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-function validate() {
-  for (const key of Object.keys(errors)) delete errors[key]
-
-  if (!form.email.trim()) errors.email = 'Email is required'
-  else if (!EMAIL_RE.test(form.email.trim())) errors.email = 'Enter a valid email address'
-  if (!form.company.trim()) errors.company = 'Company name is required'
-  if (!form.country) errors.country = 'Please select a country'
-  if (!form.describes) errors.describes = 'Please select an option'
-  if (!form.message.trim()) errors.message = 'A message is required'
-  if (!form.hearAbout) errors.hearAbout = 'Please select an option'
-  if (!form.consent) errors.consent = 'Please accept the privacy policy to continue'
-
-  return Object.keys(errors).length === 0
-}
-
-async function onSubmit() {
-  submitError.value = ''
-  if (!validate()) return
-
-  submitting.value = true
-  try {
-    await $fetch('/api/contact', { method: 'POST', body: { ...form } })
-    submitted.value = true
-  } catch (err: any) {
-    const serverErrors = err?.data?.data?.errors as Record<string, string> | undefined
-    if (serverErrors) Object.assign(errors, serverErrors)
-    submitError.value = 'Something went wrong. Please try again.'
-  } finally {
-    submitting.value = false
-  }
-}
-
-/* Shared field classes — keeps the markup tidy and consistent. */
+/* Desktop inline-card field styling (16px). The mobile modal styles its own. */
 const fieldBase =
   'w-full rounded-[10px] border bg-white px-[14px] py-[12px] text-base leading-6 tracking-[0.32px] text-ink outline-none transition-colors placeholder:text-placeholder focus:border-primary focus:ring-2 focus:ring-primary/15'
 
 function fieldClass(name: string) {
-  return [fieldBase, errors[name] ? 'border-required' : 'border-line']
+  return [fieldBase, borderClass(name)]
 }
+
+// On mobile the form is presented as a modal (rendered globally in app.vue).
+const { openModal } = useContactModal()
 </script>
 
 <template>
@@ -172,11 +99,20 @@ function fieldClass(name: string) {
               </li>
             </ul>
           </div>
+
+          <!-- Mobile-only trigger: opens the contact form in a modal -->
+          <button
+            type="button"
+            class="mt-8 flex w-full items-center justify-center rounded-[44px] bg-primary px-6 py-4 text-base font-medium leading-6 tracking-[0.16px] text-white transition-colors hover:bg-primary-hover lg:hidden"
+            @click="openModal"
+          >
+            Send us a message
+          </button>
         </div>
 
-        <!-- Right column — device frame + form ─────────────────── -->
+        <!-- Right column — device frame + form (desktop only) ──────── -->
         <div
-          class="relative w-full max-w-[602px] lg:h-[838px] lg:w-[602px] lg:overflow-hidden lg:rounded-[40px]"
+          class="relative hidden w-full max-w-[602px] lg:block lg:h-[838px] lg:w-[602px] lg:overflow-hidden lg:rounded-[40px]"
         >
           <!-- Metallic device bezel (decorative) -->
           <img
