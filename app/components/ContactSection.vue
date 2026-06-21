@@ -176,7 +176,7 @@ function fieldClass(name: string) {
 
         <!-- Right column — device frame + form ─────────────────── -->
         <div
-          class="relative w-full max-w-[602px] overflow-hidden rounded-[28px] lg:h-[838px] lg:w-[602px] lg:rounded-[40px]"
+          class="relative w-full max-w-[602px] lg:h-[838px] lg:w-[602px] lg:overflow-hidden lg:rounded-[40px]"
         >
           <!-- Metallic device bezel (decorative) -->
           <img
@@ -186,14 +186,14 @@ function fieldClass(name: string) {
             class="pointer-events-none absolute inset-0 hidden size-full rounded-[40px] object-cover mix-blend-luminosity lg:block"
           />
 
-          <!-- Inner white card -->
+          <!-- Inner card: a clean white card on mobile, the device screen on desktop -->
           <div
-            class="relative flex h-full flex-col overflow-hidden rounded-[20px] border-[6px] border-subtle bg-canvas lg:absolute lg:left-1/2 lg:top-1/2 lg:h-[790px] lg:w-[570px] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-[24px] lg:border-8"
+            class="relative flex flex-col rounded-2xl border border-line-subtle bg-white shadow-sm lg:absolute lg:left-1/2 lg:top-1/2 lg:h-[790px] lg:w-[570px] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:overflow-hidden lg:rounded-[24px] lg:border-8 lg:border-subtle lg:bg-canvas lg:shadow-none"
           >
             <!-- Success state -->
             <div
               v-if="submitted"
-              class="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center"
+              class="flex min-h-[420px] flex-col items-center justify-center gap-4 px-8 py-12 text-center lg:min-h-0 lg:flex-1 lg:py-0"
             >
               <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <svg
@@ -218,7 +218,7 @@ function fieldClass(name: string) {
             <!-- Form -->
             <template v-else>
               <form
-                class="form-scroll flex flex-1 flex-col gap-[10px] overflow-y-auto p-4"
+                class="form-scroll flex flex-col gap-[10px] p-4 lg:flex-1 lg:overflow-y-auto"
                 novalidate
                 @submit.prevent="onSubmit"
               >
@@ -471,8 +471,8 @@ function fieldClass(name: string) {
                 </div>
               </form>
 
-              <!-- Sticky submit footer -->
-              <div class="flex flex-col items-center gap-[10px] border-t border-subtle bg-white px-4 py-5">
+              <!-- Submit area: flows with the form on mobile, pinned footer bar on desktop -->
+              <div class="flex flex-col items-center gap-[10px] px-4 pb-4 lg:border-t lg:border-subtle lg:bg-white lg:px-4 lg:py-5">
                 <p v-if="submitError" class="text-sm leading-5 text-required">{{ submitError }}</p>
                 <button
                   type="button"
