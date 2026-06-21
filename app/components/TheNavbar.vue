@@ -9,6 +9,7 @@ const links = [
 
 const open = ref(false)
 const scrolled = ref(false)
+const sound = useUiSound()
 
 function onScroll() {
   scrolled.value = window.scrollY > 12
@@ -20,8 +21,28 @@ onMounted(() => {
 })
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
+function toggle() {
+  open.value = !open.value
+  open.value ? sound.playOpen() : sound.playClose()
+}
+
 function close() {
+  if (!open.value) return
   open.value = false
+  sound.playClose()
+}
+
+// Staggered menu-item reveal (values reverse-engineered from glossar.app):
+// items start slightly raised + transparent and settle in, 80ms apart.
+const ISLAND_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
+function itemStyle(i: number) {
+  const delay = open.value ? 0.16 + i * 0.08 : 0
+  return {
+    transition: `opacity 0.46s ${ISLAND_EASE} ${delay}s, transform 0.7s ${ISLAND_EASE} ${delay}s`,
+    opacity: open.value ? 1 : 0,
+    transform: open.value ? 'translateY(0)' : 'translateY(-10px)',
+    willChange: 'opacity, transform',
+  }
 }
 </script>
 
@@ -69,83 +90,80 @@ function close() {
         </div>
       </nav>
 
-      <!-- Mobile bar -->
-      <nav
-        class="relative flex h-12 w-full min-w-0 items-center justify-between gap-3 rounded-[60px] border-[0.5px] border-line-subtle bg-white px-3 py-[6px] shadow-sm lg:hidden"
-        :class="scrolled ? 'shadow-md shadow-black/8' : ''"
+      <!-- Mobile: a single pill that expands downward to hold the menu -->
+      <div
+        class="w-full min-w-0 overflow-hidden border-[0.5px] border-line-subtle bg-white transition-[border-radius,box-shadow] duration-300 ease-[cubic-bezier(0.2,0.7,0.2,1)] lg:hidden"
+        :class="
+          open
+            ? 'rounded-[28px] shadow-xl'
+            : scrolled
+              ? 'rounded-[60px] shadow-md shadow-black/8'
+              : 'rounded-[60px] shadow-sm'
+        "
       >
-        <a href="/" class="flex min-w-0 shrink items-center" @click="close">
-          <img
-            src="/images/logo.svg"
-            alt="Kaorex"
-            class="h-9 w-[97px] object-contain object-left"
-          />
-        </a>
+        <!-- Top bar (always visible) -->
+        <div class="flex h-12 w-full items-center justify-between gap-3 px-3 py-[6px]">
+          <a href="/" class="flex min-w-0 shrink items-center" @click="close">
+            <img
+              src="/images/logo.svg"
+              alt="Kaorex"
+              class="h-9 w-[97px] object-contain object-left"
+            />
+          </a>
 
-        <button
-          class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-heading"
-          :aria-expanded="open"
-          aria-label="Toggle menu"
-          @click="open = !open"
-        >
-          <svg
-            v-if="!open"
-            class="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
+          <button
+            class="relative flex h-5 w-5 shrink-0 items-center justify-center text-heading"
+            :aria-expanded="open"
+            aria-controls="mobile-menu"
+            aria-label="Toggle menu"
+            @click="toggle"
           >
-            <path d="M4 7h16M4 12h16M4 17h16" />
-          </svg>
-          <svg
-            v-else
-            class="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-          >
-            <path d="M6 6l12 12M18 6L6 18" />
-          </svg>
-        </button>
-      </nav>
+            <!-- Two bars converge into a single line when open (glossar style) -->
+            <span
+              class="absolute h-[2px] w-5 rounded-full bg-current transition-transform duration-300 ease-[cubic-bezier(0.2,0.7,0.2,1)]"
+              :class="open ? 'translate-y-0' : '-translate-y-[3.5px]'"
+            />
+            <span
+              class="absolute h-[2px] w-5 rounded-full bg-current transition-transform duration-300 ease-[cubic-bezier(0.2,0.7,0.2,1)]"
+              :class="open ? 'translate-y-0' : 'translate-y-[3.5px]'"
+            />
+          </button>
+        </div>
 
-      <Transition
-        enter-active-class="transition duration-200 ease-out"
-        enter-from-class="opacity-0 -translate-y-2"
-        enter-to-class="opacity-100 translate-y-0"
-        leave-active-class="transition duration-150 ease-in"
-        leave-from-class="opacity-100 translate-y-0"
-        leave-to-class="opacity-0 -translate-y-2"
-      >
+        <!-- Expandable region: animates its own height via grid-rows -->
         <div
-          v-if="open"
-          class="mt-2 w-full overflow-hidden rounded-3xl border-[0.5px] border-line-subtle bg-white p-4 shadow-xl lg:hidden"
+          class="grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.2,0.7,0.2,1)]"
+          :class="open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
         >
-          <ul class="flex flex-col">
-            <li v-for="link in links" :key="link.href">
-              <a
-                :href="link.href"
-                class="block rounded-xl px-3 py-3 text-sm font-medium leading-5 text-heading transition-colors hover:bg-muted"
-                @click="close"
-              >
-                {{ link.label }}
-              </a>
-            </li>
-          </ul>
-          <div class="mt-3 flex flex-col gap-3">
-            <AppButton variant="secondary" href="#" :show-icon="false" block @click="close">
-              Sign in
-            </AppButton>
-            <AppButton variant="primary" href="/contact" :show-icon="false" block @click="close">
-              Contact us
-            </AppButton>
+          <div id="mobile-menu" class="min-h-0 overflow-hidden" :inert="!open">
+            <div class="px-3 pb-3 pt-1">
+              <ul class="divide-y divide-line-subtle overflow-hidden rounded-2xl bg-muted">
+                <li v-for="(link, i) in links" :key="link.href" :style="itemStyle(i)">
+                  <a
+                    :href="link.href"
+                    class="block px-4 py-3.5 text-sm font-medium leading-5 text-heading transition-colors hover:bg-subtle"
+                    @click="close"
+                  >
+                    {{ link.label }}
+                  </a>
+                </li>
+              </ul>
+              <div class="mt-3 flex flex-col gap-3">
+                <div :style="itemStyle(links.length)">
+                  <AppButton variant="secondary" href="#" :show-icon="false" block @click="close">
+                    Sign in
+                  </AppButton>
+                </div>
+                <div :style="itemStyle(links.length + 1)">
+                  <AppButton variant="primary" href="/contact" :show-icon="false" block @click="close">
+                    Contact us
+                  </AppButton>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </Transition>
+      </div>
     </div>
   </header>
 </template>

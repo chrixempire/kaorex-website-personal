@@ -1,6 +1,4 @@
-<script setup lang="ts">
-const { fadeUp } = useMotionPresets()
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <section id="top" class="relative z-10 w-full">
@@ -14,50 +12,51 @@ const { fadeUp } = useMotionPresets()
       />
       <div class="absolute inset-0 bg-black/40" />
 
-      <div
-        class="relative flex h-full w-full min-w-0 flex-col justify-end gap-5 px-3 pb-12 lg:max-w-[484px] lg:px-[50px] lg:pb-[50px]"
-      >
-        <h1
-          v-motion
-          :initial="fadeUp(0).initial"
-          :visible-once="fadeUp(0).visibleOnce"
-          class="max-w-[246px] text-[36px] font-bold leading-[44px] text-white lg:max-w-none lg:text-[60px] lg:leading-[60px]"
-        >
-          Peer-to-Peer FX Exchange
-        </h1>
+      <!-- Background panel stays full-bleed; content is capped to the 1416px column -->
+      <div class="relative flex h-full w-full min-w-0 flex-col justify-end pb-12 lg:pb-[50px]">
+        <div class="container-page px-3 lg:px-[50px]">
+          <div class="flex flex-col gap-5 lg:max-w-[484px]">
+            <Reveal
+              as="h1"
+              split="words"
+              text="Peer-to-Peer FX Exchange"
+              :delay="80"
+              :stagger="55"
+              class="max-w-[246px] text-[36px] font-bold leading-[44px] text-white lg:max-w-none lg:text-[60px] lg:leading-[60px]"
+            />
 
-        <p
-          v-motion
-          :initial="fadeUp(120).initial"
-          :visible-once="fadeUp(120).visibleOnce"
-          class="max-w-[278px] text-base font-medium leading-6 tracking-[0.16px] text-white lg:max-w-[372px] lg:text-xl lg:leading-7 lg:tracking-normal"
-        >
-          Trade foreign currencies with verified users through escrow-backed
-          transactions. Transparent rates, secure settlements, zero middlemen.
-        </p>
+            <Reveal
+              as="p"
+              split="words"
+              text="Trade foreign currencies with verified users through escrow-backed transactions. Transparent rates, secure settlements, zero middlemen."
+              :delay="260"
+              :stagger="22"
+              class="max-w-[278px] text-base font-medium leading-6 tracking-[0.16px] text-white lg:max-w-[372px] lg:text-xl lg:leading-7 lg:tracking-normal"
+            />
 
-        <div
-          v-motion
-          :initial="fadeUp(240).initial"
-          :visible-once="fadeUp(240).visibleOnce"
-          class="flex flex-row flex-wrap items-center gap-3"
-        >
-          <AppButton
-            variant="primary"
-            href="#cta"
-            class="group !h-10 !w-[168px] !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
-            :show-icon="false"
-          >
-            Contact us
-          </AppButton>
-          <AppButton
-            variant="secondary"
-            href="#how-it-works"
-            class="group !h-10 !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
-            :show-icon="false"
-          >
-            See how it works
-          </AppButton>
+            <Reveal
+              as="div"
+              :delay="520"
+              class="flex flex-row flex-wrap items-center gap-3"
+            >
+              <AppButton
+                variant="primary"
+                href="#cta"
+                class="group !h-10 !w-[168px] !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
+                :show-icon="false"
+              >
+                Contact us
+              </AppButton>
+              <AppButton
+                variant="secondary"
+                href="#how-it-works"
+                class="group !h-10 !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
+                :show-icon="false"
+              >
+                See how it works
+              </AppButton>
+            </Reveal>
+          </div>
         </div>
       </div>
     </div>
