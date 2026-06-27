@@ -1,11 +1,23 @@
 import tailwindcss from '@tailwindcss/vite'
+import { SITE } from './app/utils/seo'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
 
-  modules: ['@vueuse/motion/nuxt'],
+  modules: ['@vueuse/motion/nuxt', '@nuxtjs/sitemap', '@nuxtjs/robots'],
+
+  // Site identity consumed by @nuxtjs/sitemap and @nuxtjs/robots.
+  site: {
+    url: SITE.url,
+    name: SITE.name,
+  },
+
+  // robots.txt: allow crawling and point to the sitemap (auto-wired from `site`).
+  robots: {
+    allow: '/',
+  },
 
   // shadcn-vue components under ui/ are imported explicitly (via their index.ts),
   // so exclude them from auto-import to avoid duplicate-name warnings.

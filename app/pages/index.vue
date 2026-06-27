@@ -1,3 +1,51 @@
+<script setup lang="ts">
+const title = SITE.defaultTitle
+const description = SITE.description
+const canonical = absoluteUrl('/')
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  ogUrl: canonical,
+  twitterTitle: title,
+  twitterDescription: description,
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonical }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebPage',
+            '@id': `${canonical}#webpage`,
+            url: canonical,
+            name: title,
+            description,
+            isPartOf: { '@id': absoluteUrl('/#website') },
+            inLanguage: 'en',
+          },
+          {
+            '@type': 'FAQPage',
+            '@id': `${canonical}#faq`,
+            mainEntity: FAQS.map((f) => ({
+              '@type': 'Question',
+              name: f.q,
+              acceptedAnswer: { '@type': 'Answer', text: f.a },
+            })),
+          },
+        ],
+      }),
+    },
+  ],
+})
+</script>
+
 <template>
   <div>
     <CursorLevelTrail />

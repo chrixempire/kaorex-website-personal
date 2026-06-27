@@ -22,6 +22,53 @@ onMounted(() => {
   mq.addEventListener('change', onChange)
   onBeforeUnmount(() => mq.removeEventListener('change', onChange))
 })
+
+/* ── Site-wide SEO defaults (pages override title/description/canonical) ── */
+useSeoMeta({
+  ogSiteName: SITE.name,
+  ogType: 'website',
+  ogLocale: SITE.locale,
+  ogImage: absoluteUrl(SITE.ogImage),
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt: SITE.defaultTitle,
+  twitterCard: 'summary_large_image',
+  twitterSite: SITE.twitter,
+  twitterImage: absoluteUrl(SITE.ogImage),
+})
+
+/* Organization + WebSite structured data (applies across the whole site). */
+useHead({
+  htmlAttrs: { lang: 'en' },
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Organization',
+            '@id': absoluteUrl('/#organization'),
+            name: SITE.name,
+            url: SITE.url,
+            logo: absoluteUrl('/images/logo.png'),
+            email: SITE.email,
+            description: SITE.description,
+          },
+          {
+            '@type': 'WebSite',
+            '@id': absoluteUrl('/#website'),
+            url: SITE.url,
+            name: SITE.name,
+            description: SITE.description,
+            inLanguage: 'en',
+            publisher: { '@id': absoluteUrl('/#organization') },
+          },
+        ],
+      }),
+    },
+  ],
+})
 </script>
 
 <template>
