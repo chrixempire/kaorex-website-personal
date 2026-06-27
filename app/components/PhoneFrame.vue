@@ -34,7 +34,7 @@ const btnRight =
             <img
               :key="screens[activeIndex]"
               :src="screens[activeIndex]"
-              alt=""
+              alt="" loading="lazy"
               class="absolute max-w-none object-cover object-top"
               style="height: 95.96%; width: 91.17%; left: 4.22%; top: 2.23%"
             />
@@ -47,7 +47,7 @@ const btnRight =
       >
         <img
           src="/images/how-it-works/phone-eyebrow.svg"
-          alt=""
+          alt="" loading="lazy"
           class="absolute inset-0 block size-full max-w-none"
         />
       </div>

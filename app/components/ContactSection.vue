@@ -36,7 +36,7 @@ const { openModal } = useContactModal()
 </script>
 
 <template>
-  <section id="contact" class="section-panel bg-subtle">
+  <section id="contact" class="w-full bg-subtle">
     <div class="container-page pb-16 pt-[120px] lg:pb-[66px] lg:pt-[154px]">
       <div
         class="mx-auto flex max-w-[1164px] flex-col items-center gap-12 lg:flex-row lg:items-start lg:justify-center lg:gap-[84px]"
@@ -119,7 +119,7 @@ const { openModal } = useContactModal()
           <!-- Metallic device bezel (decorative) -->
           <img
             src="/images/contact/device-frame.jpg"
-            alt=""
+            alt="" loading="lazy"
             aria-hidden="true"
             class="pointer-events-none absolute inset-0 hidden size-full rounded-[40px] object-cover mix-blend-luminosity lg:block"
           />

@@ -70,7 +70,7 @@ const borderClass = computed(() => (props.error ? 'border-required' : 'border-li
       :id="id"
       type="button"
       :class="[
-        'flex w-full items-center justify-between gap-2 rounded-[10px] border bg-white px-[14px] py-[10px] text-left text-sm leading-5 tracking-[0.42px] outline-none transition-colors data-[state=open]:border-primary lg:py-[12px] lg:text-base lg:leading-6 lg:tracking-[0.32px]',
+        'flex w-full cursor-pointer items-center justify-between gap-2 rounded-[10px] border bg-white px-[14px] py-[10px] text-left text-sm leading-5 tracking-[0.42px] outline-none transition-colors data-[state=open]:border-primary lg:py-[12px] lg:text-base lg:leading-6 lg:tracking-[0.32px]',
         borderClass,
         modelValue ? 'text-ink' : 'text-placeholder',
       ]"

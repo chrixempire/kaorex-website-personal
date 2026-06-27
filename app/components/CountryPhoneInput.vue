@@ -87,7 +87,7 @@ const borderClass = computed(() => (props.error ? 'border-required' : 'border-li
       <DropdownMenuTrigger
         type="button"
         :class="[
-          'flex h-[40px] shrink-0 items-center gap-[5px] rounded-[10px] border bg-white px-3 transition-colors lg:h-[52px] lg:px-[14px]',
+          'flex h-[40px] shrink-0 cursor-pointer items-center gap-[5px] rounded-[10px] border bg-white px-3 transition-colors lg:h-[52px] lg:px-[14px]',
           borderClass,
         ]"
         aria-label="Select country dialing code"

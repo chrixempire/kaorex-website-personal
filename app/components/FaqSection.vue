@@ -40,7 +40,7 @@ function toggle(i: number) {
           <span class="text-base font-medium leading-6 text-heading lg:text-lg lg:leading-7">{{ item.q }}</span>
           <img
             :src="open === i ? '/images/faq-close.svg' : '/images/faq-plus.svg'"
-            alt=""
+            alt="" loading="lazy"
             class="h-3 w-3 shrink-0 lg:h-4 lg:w-4"
           />
         </button>

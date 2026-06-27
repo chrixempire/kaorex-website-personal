@@ -36,13 +36,15 @@ useHead({
 </script>
 
 <template>
-  <div>
+  <div class="bg-canvas">
     <TheNavbar />
 
     <main id="top" class="flex w-full min-w-0 flex-col overflow-x-hidden">
       <ContactSection />
 
-      <div class="bg-canvas">
+      <!-- Footer band: 81px content with 44px top + 20px bottom padding
+           (the 20px left/right comes from the footer's own padding). -->
+      <div class="pb-5 pt-11">
         <TheFooter />
       </div>
     </main>

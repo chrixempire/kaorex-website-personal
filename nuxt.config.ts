@@ -27,6 +27,18 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    // Pre-bundle these deps so adding shadcn-vue/reka-ui doesn't trigger
+    // mid-session dep re-optimization and full page reloads.
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'clsx',
+        'country-list-json',
+        'reka-ui',
+        'tailwind-merge',
+      ],
+    },
   },
 
   app: {
@@ -45,12 +57,6 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/images/logo.png' },
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-        },
       ],
     },
   },

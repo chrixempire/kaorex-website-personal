@@ -13,8 +13,8 @@ const { requestContact } = useContactModal()
         v-motion
         :initial="fadeIn().initial"
         :visible-once="fadeIn().visibleOnce"
-        src="/images/cta-pattern.png"
-        alt=""
+        src="/images/cta-pattern.webp"
+        alt="" loading="lazy"
         aria-hidden="true"
         class="pointer-events-none absolute -right-1/4 top-1/2 w-[160%] max-w-none -translate-y-1/2 rotate-[9.63deg] opacity-30 mix-blend-difference sm:w-[120%]"
       />
