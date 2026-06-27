@@ -100,8 +100,8 @@ onBeforeUnmount(() => {
       v-motion
       :initial="fadeUp().initial"
       :visible-once="fadeUp().visibleOnce"
-      src="/images/money-icon.png"
-      alt=""
+      src="/images/money-icon.webp"
+      alt="" loading="lazy"
       aria-hidden="true"
       class="mb-6 h-[75.5px] w-[99px] object-contain mix-blend-difference lg:mb-10 lg:h-[151px] lg:w-[198px]"
     />

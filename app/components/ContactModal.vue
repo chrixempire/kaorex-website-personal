@@ -2,12 +2,11 @@
 /* Figma: IPC Product MVP — Contact modal (node 11405:3499). Mobile presentation
    of the contact form: a centred, 80vh, animated modal. */
 
+import { Checkbox } from '~/components/ui/checkbox'
+
 const { open, closeModal } = useContactModal()
 
 const {
-  dialCodes,
-  countries,
-  describesOptions,
   hearAboutOptions,
   form,
   errors,
@@ -18,6 +17,9 @@ const {
   reset,
   borderClass,
 } = useContactForm()
+
+/** Full searchable country list for the Country field. */
+const countryNames = useCountries().countries.map((c) => c.name)
 
 const fieldBase =
   'w-full rounded-[10px] border bg-white px-[14px] py-[10px] text-sm leading-5 tracking-[0.42px] text-ink outline-none transition-colors placeholder:text-placeholder focus:border-primary focus:ring-2 focus:ring-primary/15'
@@ -177,45 +179,11 @@ onBeforeUnmount(() => {
                     <label for="m-phone" class="text-sm leading-5 tracking-[0.42px] text-ink">
                       Phone number <span class="text-base leading-5 text-required">*</span>
                     </label>
-                    <div class="flex gap-[10px]">
-                      <div
-                        class="relative flex h-[40px] shrink-0 items-center gap-[5px] rounded-[10px] border border-line bg-white px-3"
-                      >
-                        <span class="h-[22px] w-[22px] shrink-0 overflow-hidden rounded-full">
-                          <svg viewBox="0 0 30 30" class="h-full w-full" aria-hidden="true">
-                            <rect width="10" height="30" fill="#008751" />
-                            <rect x="10" width="10" height="30" fill="#fff" />
-                            <rect x="20" width="10" height="30" fill="#008751" />
-                          </svg>
-                        </span>
-                        <svg
-                          class="pointer-events-none h-5 w-5 text-ink"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="1.6"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          aria-hidden="true"
-                        >
-                          <path d="m7 10 5 5 5-5" />
-                        </svg>
-                        <select
-                          v-model="form.dialCode"
-                          aria-label="Country dialing code"
-                          class="absolute inset-0 cursor-pointer opacity-0"
-                        >
-                          <option v-for="d in dialCodes" :key="d.code" :value="d.code">{{ d.label }}</option>
-                        </select>
-                      </div>
-                      <input
-                        id="m-phone"
-                        v-model="form.phone"
-                        type="tel"
-                        :placeholder="`${form.dialCode} XXX XXX XXXX`"
-                        :class="[fieldClass('phone'), 'flex-1']"
-                      />
-                    </div>
+                    <CountryPhoneInput
+                      v-model:dial-code="form.dialCode"
+                      v-model:phone="form.phone"
+                      input-id="m-phone"
+                    />
                   </div>
 
                   <!-- Company name -->
@@ -238,28 +206,15 @@ onBeforeUnmount(() => {
                     <label for="m-country" class="text-sm leading-5 tracking-[0.42px] text-ink">
                       Country <span class="text-base leading-5 text-required">*</span>
                     </label>
-                    <div class="relative">
-                      <select
-                        id="m-country"
-                        v-model="form.country"
-                        :class="[fieldClass('country'), 'cursor-pointer appearance-none pr-10', form.country ? 'text-ink' : 'text-placeholder']"
-                      >
-                        <option value="" disabled>Select country</option>
-                        <option v-for="cName in countries" :key="cName" :value="cName" class="text-ink">{{ cName }}</option>
-                      </select>
-                      <svg
-                        class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="m7 10 5 5 5-5" />
-                      </svg>
-                    </div>
+                    <FormSelect
+                      id="m-country"
+                      v-model="form.country"
+                      :options="countryNames"
+                      searchable
+                      placeholder="Select country"
+                      search-placeholder="Search countries..."
+                      :error="!!errors.country"
+                    />
                     <p v-if="errors.country" class="text-xs leading-4 text-required">{{ errors.country }}</p>
                   </div>
 
@@ -283,44 +238,29 @@ onBeforeUnmount(() => {
                     <label for="m-hear" class="text-sm leading-5 tracking-[0.42px] text-ink">
                       How did you hear about us? <span class="text-base leading-5 text-required">*</span>
                     </label>
-                    <div class="relative">
-                      <select
-                        id="m-hear"
-                        v-model="form.hearAbout"
-                        :class="[fieldClass('hearAbout'), 'cursor-pointer appearance-none pr-10', form.hearAbout ? 'text-ink' : 'text-placeholder']"
-                      >
-                        <option value="" disabled>Select an option</option>
-                        <option v-for="o in hearAboutOptions" :key="o" :value="o" class="text-ink">{{ o }}</option>
-                      </select>
-                      <svg
-                        class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="m7 10 5 5 5-5" />
-                      </svg>
-                    </div>
+                    <FormSelect
+                      id="m-hear"
+                      v-model="form.hearAbout"
+                      :options="hearAboutOptions"
+                      placeholder="Select an option"
+                      :error="!!errors.hearAbout"
+                    />
                     <p v-if="errors.hearAbout" class="text-xs leading-4 text-required">{{ errors.hearAbout }}</p>
                   </div>
 
                   <!-- Consent -->
-                  <label class="flex items-start gap-[10px]">
-                    <input
-                      v-model="form.consent"
-                      type="checkbox"
-                      class="mt-px h-[23px] w-[23px] shrink-0 cursor-pointer rounded-[5px] border border-[#d4d5d6] accent-primary"
-                    />
-                    <span class="text-xs leading-4 tracking-[0.24px] text-body">
+                  <div class="flex items-start gap-[10px]">
+                    <Checkbox id="m-consent" v-model="form.consent" class="mt-px" />
+                    <label
+                      for="m-consent"
+                      class="cursor-pointer text-xs leading-4 tracking-[0.24px] text-body"
+                      @click="form.consent = !form.consent"
+                    >
                       I agree to the
-                      <a href="#" class="text-[#0066cc] hover:underline">Privacy Policy</a>
+                      <a href="#" class="text-[#0066cc] hover:underline" @click.stop>Privacy Policy</a>
                       and consent to be contacted by the Kaorex team regarding my request
-                    </span>
-                  </label>
+                    </label>
+                  </div>
                   <p v-if="errors.consent" class="text-xs leading-4 text-required">{{ errors.consent }}</p>
 
                   <!-- Submit -->

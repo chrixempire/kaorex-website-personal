@@ -53,7 +53,7 @@ const monitoringFeatures = [
     <!-- Figma 3105:220 — orange bg, 86px 68px padding, 40px radius -->
     <div
       class="section-panel relative overflow-hidden rounded-[30px] bg-[lightgray] bg-cover bg-center bg-no-repeat px-5 py-10 lg:rounded-[40px] lg:px-[68px] lg:py-[86px]"
-      style="background-image: url('/images/security/orange-bg.jpg')"
+      style="background-image: url('/images/security/orange-bg.webp')"
     >
       <div
         class="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center rounded-[24px] bg-white py-8 lg:min-h-[728px] lg:py-0"
@@ -101,7 +101,7 @@ const monitoringFeatures = [
                   class="flex items-center gap-3"
                 >
                   <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center">
-                    <img :src="item.icon" alt="" class="h-6 w-6" aria-hidden="true" />
+                    <img :src="item.icon" alt="" loading="lazy" class="h-6 w-6" aria-hidden="true" />
                   </span>
                   <div class="min-w-0">
                     <p class="text-base font-medium leading-6 tracking-[0.16px] text-heading">
@@ -137,7 +137,7 @@ const monitoringFeatures = [
                   class="flex items-center gap-3"
                 >
                   <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center">
-                    <img :src="item.icon" alt="" class="h-6 w-6" aria-hidden="true" />
+                    <img :src="item.icon" alt="" loading="lazy" class="h-6 w-6" aria-hidden="true" />
                   </span>
                   <div class="min-w-0">
                     <p class="text-base font-medium leading-6 tracking-[0.16px] text-heading">

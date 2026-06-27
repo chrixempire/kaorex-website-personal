@@ -191,14 +191,14 @@ onBeforeUnmount(() => {
               <img
                 v-if="f.mockup && f.key !== 'offers'"
                 :src="f.mockup"
-                alt=""
+                alt="" loading="lazy"
                 aria-hidden="true"
                 class="h-full w-full object-cover"
               />
               <div v-else-if="f.key === 'offers'" class="absolute inset-0 overflow-hidden">
                 <img
                   :src="f.mockup!"
-                  alt=""
+                  alt="" loading="lazy"
                   aria-hidden="true"
                   class="absolute left-px top-[-95px] h-[574px] w-[718px] max-w-none object-cover"
                 />
@@ -234,8 +234,8 @@ onBeforeUnmount(() => {
                 class="relative h-full"
               >
                 <img
-                  src="/images/features/alerts-bg.png"
-                  alt=""
+                  src="/images/features/alerts-bg.webp"
+                  alt="" loading="lazy"
                   aria-hidden="true"
                   class="absolute inset-0 h-full w-full object-cover"
                 />
@@ -279,7 +279,7 @@ onBeforeUnmount(() => {
           class="cursor-pointer transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
           @click="scrollBy(-1)"
         >
-          <img src="/images/arrow-left.svg" alt="" class="h-[30px] w-[30px]" />
+          <img src="/images/arrow-left.svg" alt="" loading="lazy" class="h-[30px] w-[30px]" />
         </button>
         <button
           type="button"
@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
           class="cursor-pointer transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
           @click="scrollBy(1)"
         >
-          <img src="/images/arrow-right.svg" alt="" class="h-[30px] w-[30px]" />
+          <img src="/images/arrow-right.svg" alt="" loading="lazy" class="h-[30px] w-[30px]" />
         </button>
       </div>
     </div>

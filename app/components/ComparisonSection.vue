@@ -131,8 +131,8 @@ onBeforeUnmount(() => {
         class="relative flex h-[578px] flex-col overflow-hidden rounded-[30px] px-5 pt-[50px] pb-6 lg:h-[900px] lg:rounded-[40px] lg:px-[68px] lg:pt-[62px] lg:pb-[30px]"
       >
         <img
-          src="/images/comparison-teal-bg.jpg"
-          alt=""
+          src="/images/comparison-teal-bg.webp"
+          alt="" loading="lazy"
           aria-hidden="true"
           class="pointer-events-none absolute inset-0 h-full w-full object-cover"
         />
@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
               <p class="text-lg font-medium leading-7 text-body lg:text-[18px]">{{ s.eyebrow }}</p>
               <img
                 :src="s.icon"
-                alt=""
+                alt="" loading="lazy"
                 aria-hidden="true"
                 class="h-[110px] w-[145px] object-contain lg:h-[151px] lg:w-[198px]"
               />
@@ -201,8 +201,8 @@ onBeforeUnmount(() => {
         class="relative min-h-[578px] overflow-hidden rounded-[30px] lg:min-h-[900px] lg:rounded-[40px]"
       >
         <img
-          src="/images/comparison-teal-bg.jpg"
-          alt=""
+          src="/images/comparison-teal-bg.webp"
+          alt="" loading="lazy"
           aria-hidden="true"
           class="absolute inset-0 h-full w-full object-cover"
         />
@@ -231,7 +231,7 @@ onBeforeUnmount(() => {
               <p class="text-lg font-medium leading-7 text-body lg:text-[18px]">{{ s.eyebrow }}</p>
               <img
                 :src="s.icon"
-                alt=""
+                alt="" loading="lazy"
                 aria-hidden="true"
                 class="h-[110px] w-[145px] object-contain lg:h-[151px] lg:w-[198px]"
               />

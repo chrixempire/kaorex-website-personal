@@ -8,8 +8,11 @@ const { requestContact } = useContactModal()
       class="relative h-[844px] min-h-[520px] w-full overflow-hidden rounded-t-[30px] bg-white lg:h-[min(900px,92vh)] lg:rounded-t-[40px]"
     >
       <img
-        src="/images/hero-woman.jpg"
+        src="/images/hero-woman.webp"
         alt="A trader using the Kaorex marketplace on her phone"
+        fetchpriority="high"
+        width="1920"
+        height="1225"
         class="absolute inset-0 h-full w-full object-cover object-center mix-blend-multiply"
       />
       <div class="absolute inset-0 bg-black/40" />

@@ -1,16 +1,44 @@
 import tailwindcss from '@tailwindcss/vite'
+import { SITE } from './app/utils/seo'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
 
-  modules: ['@vueuse/motion/nuxt'],
+  modules: ['@vueuse/motion/nuxt', '@nuxtjs/sitemap', '@nuxtjs/robots'],
+
+  // Site identity consumed by @nuxtjs/sitemap and @nuxtjs/robots.
+  site: {
+    url: SITE.url,
+    name: SITE.name,
+  },
+
+  // robots.txt: allow crawling and point to the sitemap (auto-wired from `site`).
+  robots: {
+    allow: '/',
+  },
+
+  // shadcn-vue components under ui/ are imported explicitly (via their index.ts),
+  // so exclude them from auto-import to avoid duplicate-name warnings.
+  components: [{ path: '~/components', ignore: ['**/ui/**'] }],
 
   css: ['~/assets/css/main.css'],
 
   vite: {
     plugins: [tailwindcss()],
+    // Pre-bundle these deps so adding shadcn-vue/reka-ui doesn't trigger
+    // mid-session dep re-optimization and full page reloads.
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'clsx',
+        'country-list-json',
+        'reka-ui',
+        'tailwind-merge',
+      ],
+    },
   },
 
   app: {
@@ -29,12 +57,6 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/images/logo.png' },
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-        },
       ],
     },
   },
