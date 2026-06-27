@@ -1,6 +1,6 @@
 <template>
-  <footer class="w-full pb-5 pt-4">
-    <div class="container-page">
+  <footer class="flex min-h-[159px] w-full items-center pb-5 pt-4 lg:h-[182px] lg:min-h-0 lg:py-0">
+    <div class="container-page lg:w-full">
       <div class="flex flex-col items-center gap-1 lg:flex-row lg:items-center lg:justify-between">
         <a href="#top" class="flex shrink-0 items-center">
           <img

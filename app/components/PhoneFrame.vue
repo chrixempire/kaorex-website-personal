@@ -30,7 +30,7 @@ const btnRight =
       />
       <div class="absolute inset-0 overflow-clip rounded-[26.491px] bg-[#f5f8f8] lg:rounded-[43.05px]">
         <div class="pointer-events-none absolute inset-0 overflow-hidden">
-          <Transition name="phone-screen" mode="out-in">
+          <Transition name="phone-screen">
             <img
               :key="screens[activeIndex]"
               :src="screens[activeIndex]"

@@ -134,19 +134,19 @@ onBeforeUnmount(() => {
         <article
           v-for="(t, i) in traders"
           :key="t.n"
-          class="trader-card absolute left-0 top-0 flex h-[250px] w-[270px] flex-col justify-between rounded-[24px] border border-ink-muted bg-ink px-[23px] py-8 will-change-transform"
+          class="trader-card absolute left-0 top-0 flex h-[250px] w-[270px] flex-col justify-center gap-10 rounded-[24px] border border-ink-muted bg-ink px-[23px] py-6 will-change-transform"
           :style="cardTransform(i)"
         >
           <span
             :class="t.badge"
-            class="flex h-[26px] w-[26px] items-center justify-center rounded-full text-base leading-6 tracking-wide text-white"
+            class="flex h-[26px] w-[26px] items-center justify-center rounded-full text-base leading-6 tracking-[0.32px] text-white"
           >
             {{ t.n }}
           </span>
 
           <div>
             <h3 class="text-xl font-medium leading-7 text-white">{{ t.title }}</h3>
-            <p class="mt-0 text-base leading-6 tracking-wide text-subtle">{{ t.desc }}</p>
+            <p class="mt-0 text-base leading-6 tracking-[0.32px] text-subtle">{{ t.desc }}</p>
           </div>
 
           <p class="text-sm leading-5 tracking-[0.42px] text-muted">{{ t.note }}</p>
@@ -163,7 +163,7 @@ onBeforeUnmount(() => {
           v-motion
           :initial="fadeUp(i * 120 + 200).initial"
           :visible-once="fadeUp(i * 120 + 200).visibleOnce"
-          class="absolute left-0 flex h-[190px] w-[240px] flex-col justify-between rounded-2xl border border-ink-muted bg-ink px-5 py-6"
+          class="absolute left-0 flex h-[190px] w-[240px] flex-col justify-center gap-5 rounded-2xl border border-ink-muted bg-ink px-5 py-6"
           :style="{ top: `${t.top}px` }"
         >
           <span
@@ -190,18 +190,18 @@ onBeforeUnmount(() => {
           v-motion
           :initial="fadeUp(i * 120 + 200).initial"
           :visible-once="fadeUp(i * 120 + 200).visibleOnce"
-          class="flex h-[250px] flex-col justify-between rounded-[24px] border border-ink-muted bg-ink px-[23px] py-8"
+          class="flex h-[250px] flex-col justify-center gap-10 rounded-[24px] border border-ink-muted bg-ink px-[23px] py-6"
         >
           <span
             :class="t.badge"
-            class="flex h-[26px] w-[26px] items-center justify-center rounded-full text-base leading-6 tracking-wide text-white"
+            class="flex h-[26px] w-[26px] items-center justify-center rounded-full text-base leading-6 tracking-[0.32px] text-white"
           >
             {{ t.n }}
           </span>
 
           <div>
             <h3 class="text-xl font-medium leading-7 text-white">{{ t.title }}</h3>
-            <p class="mt-0 text-base leading-6 tracking-wide text-subtle">{{ t.desc }}</p>
+            <p class="mt-0 text-base leading-6 tracking-[0.32px] text-subtle">{{ t.desc }}</p>
           </div>
 
           <p class="text-sm leading-5 tracking-[0.42px] text-muted">{{ t.note }}</p>

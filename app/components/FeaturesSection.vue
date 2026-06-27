@@ -145,12 +145,12 @@ onBeforeUnmount(() => {
     class="section-panel overflow-hidden rounded-[30px] bg-black lg:rounded-[40px]"
   >
     <div class="flex min-h-0 flex-col gap-[50px] pt-10 pb-10 lg:min-h-[824px] lg:pt-[58px] lg:pb-[58px]">
-      <div class="mx-auto w-fit max-w-[342px] shrink-0 px-5 text-center lg:max-w-[526px] lg:px-0">
+      <div class="mx-auto w-fit max-w-[280px] shrink-0 px-5 text-center lg:max-w-[526px] lg:px-0">
         <h2
           v-motion
           :initial="fadeUp().initial"
           :visible-once="fadeUp().visibleOnce"
-          class="text-2xl font-medium leading-8 text-white lg:whitespace-nowrap lg:text-[48px] lg:leading-[60px] lg:[text-wrap:nowrap]"
+          class="whitespace-nowrap text-2xl font-medium leading-8 text-white lg:text-[48px] lg:leading-[60px] lg:[text-wrap:nowrap]"
         >
           Professional trading tools
         </h2>
@@ -182,12 +182,12 @@ onBeforeUnmount(() => {
             :key="f.key"
             class="relative flex h-[450px] w-[340px] shrink-0 snap-start flex-col overflow-hidden rounded-[20px] bg-white lg:h-[490px] lg:w-[400px]"
           >
-            <div class="px-6 pt-8 lg:px-[30px] lg:pt-10">
+            <div class="px-5 pt-[30px] lg:px-[30px] lg:pt-10">
               <h3 class="text-lg font-medium leading-7 text-heading lg:text-2xl lg:leading-8">{{ f.title }}</h3>
-              <p class="mt-1 max-w-[220px] text-base font-normal leading-6 text-body lg:text-xl lg:leading-7">{{ f.desc }}</p>
+              <p class="mt-1 max-w-[170px] text-sm font-normal leading-5 tracking-[0.42px] text-body lg:max-w-[220px] lg:text-xl lg:leading-7 lg:tracking-normal">{{ f.desc }}</p>
             </div>
 
-            <div class="relative mt-auto h-[260px] overflow-hidden rounded-b-[20px] lg:h-[287px]">
+            <div class="relative mt-auto h-[287px] overflow-hidden rounded-b-[20px] lg:h-[287px]">
               <img
                 v-if="f.mockup && f.key !== 'offers'"
                 :src="f.mockup"

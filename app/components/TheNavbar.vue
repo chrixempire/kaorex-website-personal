@@ -60,7 +60,7 @@ function itemStyle(i: number) {
     <div class="container-page min-w-0">
       <!-- Desktop: fixed 899.743px pill, centred on 1440px canvas -->
       <nav
-        class="mx-auto hidden h-[60px] w-full max-w-[899.743px] items-center gap-10 rounded-[60px] border-[0.5px] border-line-subtle bg-white px-[10px] py-[6px] transition-shadow duration-300 lg:flex"
+        class="mx-auto hidden h-[60px] w-full max-w-[899.743px] items-center gap-10 rounded-[60px] border-[0.5px] border-line-subtle bg-white px-[6px] py-[6px] transition-shadow duration-300 lg:flex"
         :class="scrolled ? 'shadow-md shadow-black/8' : 'shadow-sm'"
       >
         <a href="/" class="flex w-[129.743px] shrink-0 items-center" @click="close">
@@ -110,7 +110,7 @@ function itemStyle(i: number) {
         "
       >
         <!-- Top bar (always visible) -->
-        <div class="flex h-12 w-full items-center justify-between gap-3 px-3 py-[6px]">
+        <div class="flex h-12 w-full items-center justify-between gap-3 px-4 py-[6px]">
           <a href="/" class="flex min-w-0 shrink items-center" @click="close">
             <img
               src="/images/logo.svg"
