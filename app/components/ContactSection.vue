@@ -1,5 +1,6 @@
 <script setup lang="ts">
 /* Figma: IPC Product MVP — Contact Us (desktop node 11402:3338, mobile modal 11405:3499) */
+import { Checkbox } from '~/components/ui/checkbox'
 
 const benefits = [
   'Exchange currency directly with verified traders',
@@ -8,8 +9,6 @@ const benefits = [
 ]
 
 const {
-  dialCodes,
-  countries,
   describesOptions,
   hearAboutOptions,
   form,
@@ -20,6 +19,9 @@ const {
   onSubmit,
   borderClass,
 } = useContactForm()
+
+/** Full searchable country list for the Country field. */
+const countryNames = useCountries().countries.map((c) => c.name)
 
 /* Desktop inline-card field styling (16px). The mobile modal styles its own. */
 const fieldBase =
@@ -210,47 +212,11 @@ const { openModal } = useContactModal()
                   <label for="phone" class="text-base leading-6 tracking-[0.32px] text-ink">
                     Phone number
                   </label>
-                  <div class="flex gap-[10px]">
-                    <div
-                      class="relative flex h-[52px] w-[111px] shrink-0 items-center rounded-[10px] border border-line bg-white px-[14px]"
-                    >
-                      <span class="h-[30px] w-[30px] shrink-0 overflow-hidden rounded-full">
-                        <svg viewBox="0 0 30 30" class="h-full w-full" aria-hidden="true">
-                          <rect width="10" height="30" fill="#008751" />
-                          <rect x="10" width="10" height="30" fill="#fff" />
-                          <rect x="20" width="10" height="30" fill="#008751" />
-                        </svg>
-                      </span>
-                      <svg
-                        class="pointer-events-none ml-auto h-[22px] w-[22px] text-ink"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="m7 10 5 5 5-5" />
-                      </svg>
-                      <select
-                        v-model="form.dialCode"
-                        aria-label="Country dialing code"
-                        class="absolute inset-0 cursor-pointer opacity-0"
-                      >
-                        <option v-for="d in dialCodes" :key="d.code" :value="d.code">
-                          {{ d.label }}
-                        </option>
-                      </select>
-                    </div>
-                    <input
-                      id="phone"
-                      v-model="form.phone"
-                      type="tel"
-                      :placeholder="`${form.dialCode} XXX XXX XXXX`"
-                      :class="fieldClass('phone')"
-                    />
-                  </div>
+                  <CountryPhoneInput
+                    v-model:dial-code="form.dialCode"
+                    v-model:phone="form.phone"
+                    input-id="phone"
+                  />
                 </div>
 
                 <!-- Company Name -->
@@ -275,28 +241,15 @@ const { openModal } = useContactModal()
                   <label for="country" class="text-base leading-6 tracking-[0.32px] text-ink">
                     Country <span class="text-xl leading-6 text-required">*</span>
                   </label>
-                  <div class="relative">
-                    <select
-                      id="country"
-                      v-model="form.country"
-                      :class="[fieldClass('country'), 'cursor-pointer appearance-none pr-10', form.country ? 'text-ink' : 'text-placeholder']"
-                    >
-                      <option value="" disabled>Select country</option>
-                      <option v-for="c in countries" :key="c" :value="c" class="text-ink">{{ c }}</option>
-                    </select>
-                    <svg
-                      class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="m7 10 5 5 5-5" />
-                    </svg>
-                  </div>
+                  <FormSelect
+                    id="country"
+                    v-model="form.country"
+                    :options="countryNames"
+                    searchable
+                    placeholder="Select country"
+                    search-placeholder="Search countries..."
+                    :error="!!errors.country"
+                  />
                   <p v-if="errors.country" class="text-sm leading-5 text-required">
                     {{ errors.country }}
                   </p>
@@ -307,30 +260,13 @@ const { openModal } = useContactModal()
                   <label for="describes" class="text-base leading-6 tracking-[0.32px] text-ink">
                     What best describes you? <span class="text-xl leading-6 text-required">*</span>
                   </label>
-                  <div class="relative">
-                    <select
-                      id="describes"
-                      v-model="form.describes"
-                      :class="[fieldClass('describes'), 'cursor-pointer appearance-none pr-10', form.describes ? 'text-ink' : 'text-placeholder']"
-                    >
-                      <option value="" disabled>Select an option</option>
-                      <option v-for="o in describesOptions" :key="o" :value="o" class="text-ink">
-                        {{ o }}
-                      </option>
-                    </select>
-                    <svg
-                      class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="m7 10 5 5 5-5" />
-                    </svg>
-                  </div>
+                  <FormSelect
+                    id="describes"
+                    v-model="form.describes"
+                    :options="describesOptions"
+                    placeholder="Select an option"
+                    :error="!!errors.describes"
+                  />
                   <p v-if="errors.describes" class="text-sm leading-5 text-required">
                     {{ errors.describes }}
                   </p>
@@ -358,30 +294,13 @@ const { openModal } = useContactModal()
                   <label for="hearAbout" class="text-base leading-6 tracking-[0.32px] text-ink">
                     How did you hear about us? <span class="text-xl leading-6 text-required">*</span>
                   </label>
-                  <div class="relative">
-                    <select
-                      id="hearAbout"
-                      v-model="form.hearAbout"
-                      :class="[fieldClass('hearAbout'), 'cursor-pointer appearance-none pr-10', form.hearAbout ? 'text-ink' : 'text-placeholder']"
-                    >
-                      <option value="" disabled>Select an option</option>
-                      <option v-for="o in hearAboutOptions" :key="o" :value="o" class="text-ink">
-                        {{ o }}
-                      </option>
-                    </select>
-                    <svg
-                      class="pointer-events-none absolute right-[14px] top-1/2 h-[17px] w-[17px] -translate-y-1/2 text-ink"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="m7 10 5 5 5-5" />
-                    </svg>
-                  </div>
+                  <FormSelect
+                    id="hearAbout"
+                    v-model="form.hearAbout"
+                    :options="hearAboutOptions"
+                    placeholder="Select an option"
+                    :error="!!errors.hearAbout"
+                  />
                   <p v-if="errors.hearAbout" class="text-sm leading-5 text-required">
                     {{ errors.hearAbout }}
                   </p>
@@ -389,18 +308,18 @@ const { openModal } = useContactModal()
 
                 <!-- Consent -->
                 <div class="flex flex-col gap-1">
-                  <label class="flex items-start gap-[10px]">
-                    <input
-                      v-model="form.consent"
-                      type="checkbox"
-                      class="mt-[1px] h-[23px] w-[23px] shrink-0 cursor-pointer rounded-[5px] border border-[#d4d5d6] accent-primary"
-                    />
-                    <span class="text-sm leading-5 tracking-[0.42px] text-body">
+                  <div class="flex items-start gap-[10px]">
+                    <Checkbox id="consent" v-model="form.consent" class="mt-[1px]" />
+                    <label
+                      for="consent"
+                      class="cursor-pointer text-sm leading-5 tracking-[0.42px] text-body"
+                      @click="form.consent = !form.consent"
+                    >
                       I agree to the
-                      <a href="#" class="text-[#0066cc] hover:underline">Privacy Policy</a>
+                      <a href="#" class="text-[#0066cc] hover:underline" @click.stop>Privacy Policy</a>
                       and consent to be contacted by the Kaorex team regarding my request
-                    </span>
-                  </label>
+                    </label>
+                  </div>
                   <p v-if="errors.consent" class="text-sm leading-5 text-required">
                     {{ errors.consent }}
                   </p>

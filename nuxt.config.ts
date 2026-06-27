@@ -7,6 +7,10 @@ export default defineNuxtConfig({
 
   modules: ['@vueuse/motion/nuxt'],
 
+  // shadcn-vue components under ui/ are imported explicitly (via their index.ts),
+  // so exclude them from auto-import to avoid duplicate-name warnings.
+  components: [{ path: '~/components', ignore: ['**/ui/**'] }],
+
   css: ['~/assets/css/main.css'],
 
   vite: {
