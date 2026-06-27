@@ -37,19 +37,19 @@ const { openModal } = useContactModal()
   <section id="contact" class="section-panel bg-subtle">
     <div class="container-page pb-16 pt-[120px] lg:pb-[66px] lg:pt-[154px]">
       <div
-        class="mx-auto flex max-w-[1164px] flex-col items-center gap-12 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[84px]"
+        class="mx-auto flex max-w-[1164px] flex-col items-center gap-12 lg:flex-row lg:items-start lg:justify-center lg:gap-[84px]"
       >
         <!-- Left column ───────────────────────────────────────── -->
-        <div class="flex w-full flex-col lg:h-[838px] lg:w-[478px]">
+        <div class="flex w-full flex-col lg:h-[815px] lg:w-[478px]">
           <div class="flex flex-col gap-[22px]">
             <div class="flex flex-col">
               <p class="text-sm font-medium leading-5 text-primary">CONTACT US</p>
               <h1
-                class="mt-1 text-[36px] font-medium leading-[44px] text-heading lg:text-display lg:leading-[var(--text-display--line-height)]"
+                class="mt-1 text-[36px] font-medium leading-[44px] text-heading lg:mt-0 lg:text-display lg:leading-[var(--text-display--line-height)]"
               >
                 Speak to our team
               </h1>
-              <p class="mt-2 text-lg leading-7 text-body lg:text-xl lg:leading-[28px]">
+              <p class="mt-2 text-lg leading-7 text-body lg:mt-0 lg:text-xl lg:leading-[28px]">
                 Submit your details and our team will review your request
               </p>
             </div>

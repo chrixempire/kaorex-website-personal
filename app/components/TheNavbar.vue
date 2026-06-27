@@ -110,7 +110,7 @@ function itemStyle(i: number) {
         "
       >
         <!-- Top bar (always visible) -->
-        <div class="flex h-12 w-full items-center justify-between gap-3 px-3 py-[6px]">
+        <div class="flex h-12 w-full items-center justify-between gap-3 px-4 py-[6px]">
           <a href="/" class="flex min-w-0 shrink items-center" @click="close">
             <img
               src="/images/logo.svg"

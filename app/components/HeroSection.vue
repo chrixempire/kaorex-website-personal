@@ -17,7 +17,7 @@ const { requestContact } = useContactModal()
       <!-- Background panel stays full-bleed; content is capped to the 1416px column -->
       <div class="relative flex h-full w-full min-w-0 flex-col justify-end pb-12 lg:pb-[50px]">
         <div class="container-page px-3 lg:px-[50px]">
-          <div class="flex flex-col gap-5 lg:max-w-[484px]">
+          <div class="flex flex-col gap-5 lg:max-w-[434px]">
             <Reveal
               as="h1"
               split="words"
@@ -43,7 +43,7 @@ const { requestContact } = useContactModal()
             >
               <AppButton
                 variant="primary"
-                class="group !h-10 !w-[168px] !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
+                class="group !h-10 !w-[168px] !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!px-6 lg:!py-3 lg:!text-base lg:!leading-6"
                 :show-icon="false"
                 @click="requestContact"
               >
@@ -52,7 +52,7 @@ const { requestContact } = useContactModal()
               <AppButton
                 variant="secondary"
                 href="#how-it-works"
-                class="group !h-10 !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!text-base lg:!leading-6"
+                class="group !h-10 !px-4 !py-2.5 !text-sm !leading-5 lg:!h-12 lg:!px-6 lg:!py-3 lg:!text-base lg:!leading-6"
                 :show-icon="false"
               >
                 See how it works

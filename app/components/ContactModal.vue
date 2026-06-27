@@ -81,14 +81,14 @@ onBeforeUnmount(() => {
               <div class="shrink-0 pr-8">
                 <p class="text-sm font-medium leading-5 text-primary">CONTACT US</p>
                 <h2 class="text-2xl font-medium leading-8 text-heading">Speak to our team</h2>
-                <p class="mt-1 max-w-[269px] text-base leading-6 tracking-[0.32px] text-body">
+                <p class="max-w-[269px] text-base leading-6 tracking-[0.32px] text-body">
                   Submit your details and our team will review your request
                 </p>
               </div>
 
               <!-- Scrollable card -->
               <div
-                class="modal-scroll mt-5 min-h-0 flex-1 overflow-y-auto rounded-[20px] border-8 border-subtle bg-canvas"
+                class="modal-scroll mt-[30px] min-h-0 flex-1 overflow-y-auto rounded-[20px] border-8 border-subtle bg-canvas"
               >
                 <!-- Success -->
                 <div
@@ -309,7 +309,7 @@ onBeforeUnmount(() => {
                   </div>
 
                   <!-- Consent -->
-                  <label class="mt-0.5 flex items-start gap-[10px]">
+                  <label class="flex items-start gap-[10px]">
                     <input
                       v-model="form.consent"
                       type="checkbox"
@@ -328,7 +328,7 @@ onBeforeUnmount(() => {
                   <button
                     type="submit"
                     :disabled="submitting"
-                    class="mt-2 flex w-full items-center justify-center rounded-[44px] bg-primary px-4 py-[13px] text-sm font-medium leading-5 text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-70"
+                    class="flex w-full items-center justify-center rounded-[44px] bg-primary px-4 py-[13px] text-sm font-medium leading-5 text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-70"
                   >
                     {{ submitting ? 'Sending…' : 'Submit request' }}
                   </button>

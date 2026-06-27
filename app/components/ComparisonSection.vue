@@ -97,7 +97,10 @@ onMounted(async () => {
 
     ScrollTrigger.create({
       trigger: section,
-      start: 'top top',
+      // Mobile: pin centred so the leftover space is split symmetrically
+      // around the card. Desktop: pin at the top (unchanged).
+      start: () =>
+        window.matchMedia('(max-width: 1023px)').matches ? 'center center' : 'top top',
       end: () => '+=' + N * stepDistance(),
       pin: pinEl,
       pinSpacing: true,

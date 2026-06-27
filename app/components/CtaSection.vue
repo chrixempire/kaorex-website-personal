@@ -21,7 +21,7 @@ const { requestContact } = useContactModal()
 
       <!-- Background panel + pattern stay full-bleed; content is capped to the 1416px column
            and vertically centred (Figma 3149:12: top-1/2, items-start, gap-10). -->
-      <div class="container-page relative px-6 lg:px-14">
+      <div class="container-page relative px-4 lg:px-14">
         <div class="flex flex-col items-start gap-5 lg:gap-2.5">
           <Reveal
             as="h2"
@@ -29,7 +29,7 @@ const { requestContact } = useContactModal()
             text="Ready to trade securely?"
             :delay="60"
             :stagger="55"
-            class="text-2xl font-medium leading-8 text-white lg:whitespace-nowrap lg:text-[48px] lg:leading-[60px]"
+            class="whitespace-nowrap text-2xl font-medium leading-8 text-white lg:text-[48px] lg:leading-[60px]"
           />
           <Reveal
             as="p"

@@ -58,7 +58,7 @@ function toggle(i: number) {
         class="border-b border-line-subtle py-2.5"
       >
         <button
-          class="flex w-full items-center justify-between gap-4 py-2.5 text-left"
+          class="flex w-full cursor-pointer items-center justify-between gap-4 py-2.5 text-left"
           :aria-expanded="open === i"
           @click="toggle(i)"
         >
@@ -66,7 +66,7 @@ function toggle(i: number) {
           <img
             :src="open === i ? '/images/faq-close.svg' : '/images/faq-plus.svg'"
             alt=""
-            class="h-4 w-4 shrink-0"
+            class="h-3 w-3 shrink-0 lg:h-4 lg:w-4"
           />
         </button>
 
@@ -75,7 +75,7 @@ function toggle(i: number) {
           :class="open === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
         >
           <div class="overflow-hidden">
-            <p class="max-w-[562px] pb-2.5 text-base leading-6 tracking-wide text-body">
+            <p class="max-w-[301px] pb-2.5 text-sm leading-5 tracking-[0.42px] text-body lg:max-w-[562px] lg:text-base lg:leading-6 lg:tracking-[0.32px]">
               {{ item.a }}
             </p>
           </div>
