@@ -11,12 +11,10 @@ type TrailBubble = {
 }
 
 const levels = [
-  { label: 'A1', color: '#0d7d61' },
-  { label: 'A2', color: '#065db3' },
-  { label: 'B1', color: '#932ac9' },
-  { label: 'B2', color: '#bd2b80' },
-  { label: 'C1', color: '#d02948' },
-  { label: 'C2', color: '#c15422' },
+  { label: '₦', color: '#0d7d61' },
+  { label: '$', color: '#065db3' },
+  { label: '€', color: '#932ac9' },
+  { label: '£', color: '#bd2b80' },
 ] as const
 
 const bubbles = ref<TrailBubble[]>([])

@@ -56,9 +56,9 @@ const monitoringFeatures = [
       style="background-image: url('/images/security/orange-bg.jpg')"
     >
       <div
-        class="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center rounded-[24px] bg-white py-8 lg:h-[728px] lg:py-0"
+        class="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center rounded-[24px] bg-white py-8 lg:min-h-[728px] lg:py-0"
       >
-        <div class="flex w-full max-w-[1220px] flex-1 flex-col items-center px-4 pt-6 lg:px-0 lg:pt-[47px]">
+        <div class="flex w-full max-w-[1220px] flex-1 flex-col items-center px-4 pt-6 lg:px-0 lg:pt-[47px] lg:pb-[47px]">
           <div class="text-center">
             <h2
               v-motion
@@ -79,13 +79,13 @@ const monitoringFeatures = [
           </div>
 
           <div
-            class="mt-10 grid w-full max-w-[1220px] grid-cols-1 gap-5 lg:mt-[78px] lg:grid-cols-2"
+            class="mt-10 grid w-full max-w-[1220px] grid-cols-1 gap-5 lg:mt-[50px] lg:grid-cols-2"
           >
             <article
               v-motion
               :initial="fadeUp(150).initial"
               :visible-once="fadeUp(150).visibleOnce"
-              class="rounded-[20px] bg-muted px-6 pt-8 pb-8 lg:h-[467px] lg:px-[30px] lg:pt-10 lg:pb-0"
+              class="rounded-[20px] bg-muted px-6 pt-8 pb-8 lg:min-h-[467px] lg:px-[30px] lg:py-10"
             >
               <div class="mb-8 lg:mb-[100px]">
                 <h3 class="text-lg font-medium leading-7 text-heading lg:text-2xl lg:leading-8">Escrow System</h3>
@@ -119,7 +119,7 @@ const monitoringFeatures = [
               v-motion
               :initial="fadeUp(220).initial"
               :visible-once="fadeUp(220).visibleOnce"
-              class="rounded-[20px] bg-muted px-6 pt-8 pb-8 lg:h-[467px] lg:px-[30px] lg:pt-10 lg:pb-0"
+              class="rounded-[20px] bg-muted px-6 pt-8 pb-8 lg:min-h-[467px] lg:px-[30px] lg:py-10"
             >
               <div class="mb-8 lg:mb-[100px]">
                 <h3 class="text-lg font-medium leading-7 text-heading lg:text-2xl lg:leading-8">
